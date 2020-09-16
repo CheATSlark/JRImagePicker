@@ -1,0 +1,6 @@
+framework module JRImagePicker {
+  umbrella header "JRImagePicker-umbrella.h"
+
+  export *
+  module * { export * }
+}

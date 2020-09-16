@@ -1,0 +1,22 @@
+{
+  "name": "JRImagePicker",
+  "version": "0.1.0",
+  "summary": "A short description of JRImagePicker.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/jruijqx@163.com/JRImagePicker",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "jruijqx@163.com": "jiaoruijie@ddcx-inc.com"
+  },
+  "source": {
+    "git": "https://github.com/jruijqx@163.com/JRImagePicker.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "JRImagePicker/Classes/**/*"
+}

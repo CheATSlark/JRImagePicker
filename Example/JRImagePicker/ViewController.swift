@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JRImagePicker
 
 class ViewController: UIViewController {
 
@@ -20,5 +21,26 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func pickerAction(_ sender: Any) {
+        let vc = MTPickerViewController.instance
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
+        
+    }
+    
 }
 
+extension ViewController: MTImagePickerControllerDelegate {
+    
+    func imagePickerController(picker: MTImagePickerController, didFinishPickingWithPhotosModels models: [MTImagePickerPhotosModel]) {
+        if models.count > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now()+4) { [weak self] in
+                
+            }
+            
+        }else{
+        
+        }
+        
+    }
+}

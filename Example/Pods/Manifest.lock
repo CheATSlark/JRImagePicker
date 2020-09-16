@@ -1,0 +1,16 @@
+PODS:
+  - JRImagePicker (0.1.0)
+
+DEPENDENCIES:
+  - JRImagePicker (from `../`)
+
+EXTERNAL SOURCES:
+  JRImagePicker:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  JRImagePicker: c708123f8be8fed4858cf889bf94ebe1e293d0c2
+
+PODFILE CHECKSUM: 112a5728fbda06d563c35b29621dec50f011eba8
+
+COCOAPODS: 1.9.3
