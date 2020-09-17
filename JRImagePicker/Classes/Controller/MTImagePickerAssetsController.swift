@@ -26,6 +26,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     @IBOutlet weak var lbSelected: UILabel!
     @IBOutlet weak var btnPreview: UIButton!
     @IBOutlet weak var imageCollection: MTImagePickerCollectionView!
+    @IBOutlet weak var toolbarView: UIView!
     
     private var dataSource = [MTImagePickerModel]()
     private var initialScrollDone:Bool = false
@@ -83,19 +84,21 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         loadImages()
     }
     
+    
+    
     func loadImages(){
         if let title = self.groupModel?.getAlbumName() {
             titleBtn.setTitle(title, for: .normal)
         }
-        let loading = LoadingViewController()
-        loading.show(text: "Loading...".localized)
+//        let loading = LoadingViewController()
+//        loading.show(text: "Loading...".localized)
         if self.groupModel == nil {
             MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
                 if group == nil {
-                    loading.dismiss()
+//                    loading.dismiss()
                 }else{
                     group?.getMTImagePickerModelsListAsync(complete: { [weak self](models) in
-                        loading.dismiss()
+//                        loading.dismiss()
                         self?.dataSource = models
                         self?.collectionView.reloadData()
                         self?.scrollToBottom()
@@ -104,7 +107,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
             }
         }else{
             self.groupModel?.getMTImagePickerModelsListAsync { (models) in
-                loading.dismiss()
+//                loading.dismiss()
                 self.dataSource = models
                 self.collectionView.reloadData()
                 self.scrollToBottom()
@@ -123,6 +126,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         self.collectionView.reloadData()
         self.lbSelected.text = String(delegate.selectedSource.count)
         self.btnPreview.isEnabled = !(delegate.selectedSource.count == 0)
+        self.delegate.showToolBarView(isShow: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -216,6 +220,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         }else{
             self.pushToImageSelectorPreviewController(initialIndexPath: indexPath, dataSource: self.dataSource)
         }
+        delegate.showToolBarView(isShow: false)
     }
     
     @objc func btnCheckTouch(_ sender:UIButton) {

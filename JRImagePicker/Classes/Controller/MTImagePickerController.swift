@@ -23,6 +23,8 @@ import UIKit
     @objc optional func imagePickerController(picker:MTImagePickerController, didFinishPickingWithPhotosModels models:[MTImagePickerPhotosModel])
     
     @objc optional func imagePickerControllerDidCancel(picker: MTImagePickerController)
+    
+    @objc optional func showToolBarView(isShow: Bool)
 }
 
 public class MTImagePickerController:UINavigationController {
@@ -91,6 +93,7 @@ protocol MTImagePickerDataSourceDelegate:NSObjectProtocol {
     var source:MTImagePickerSource { get }
     func didFinishPicking()
     func didCancel()
+    func showToolBarView(isShow: Bool)
 }
 
 extension MTImagePickerController:MTImagePickerDataSourceDelegate {
@@ -124,7 +127,14 @@ extension MTImagePickerController:MTImagePickerDataSourceDelegate {
         imagePickerDelegate?.imagePickerControllerDidCancel?(picker: self)
         self.dismiss(animated: true, completion: nil)
     }
-
+    
+    @objc func showToolBarView(isShow: Bool) {
+        if  imagePickerDelegate?.responds(to: #selector(showToolBarView(isShow:))) == true {
+            imagePickerDelegate?.showToolBarView?(isShow: isShow)
+        }
+        
+    }
+    
 }
 
 

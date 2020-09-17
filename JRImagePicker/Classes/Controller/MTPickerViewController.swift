@@ -14,10 +14,12 @@ public class MTPickerViewController: UIViewController {
     @IBOutlet weak var photoAssetBtn: UIButton!
     @IBOutlet weak var takePhotoBtn: UIButton!
     @IBOutlet weak var indicateView: UIView!
+    @IBOutlet var toolBtns: [UIButton]!
+    var subViewController: [UIViewController] = []
     
     lazy var photoAssetVc: MTImagePickerController = {
         let vc = MTImagePickerController.instance
-        vc.maxCount = 1
+        vc.maxCount = 9
         vc.isCrop = true
         vc.imagePickerDelegate = self
         vc.modalPresentationStyle = .fullScreen
@@ -37,29 +39,34 @@ public class MTPickerViewController: UIViewController {
              }
          }
     
-   public override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.size.width*2, height: UIScreen.main.bounds.size.height)
-        let assetView = photoAssetVc.view
-        assetView?.frame = scrollView.bounds
-        scrollView.addSubview(photoAssetVc.view)
-    
-        let takePhotoView = takePhotoVc.view
-        takePhotoView?.frame = CGRect(origin: .init(x: 0, y: scrollView.bounds.size.width), size: scrollView.bounds.size)
-        scrollView.addSubview(takePhotoVc.view)
-    
-        addChildViewController(photoAssetVc)
-        addChildViewController(takePhotoVc)
+        subViewController = [photoAssetVc, takePhotoVc]
+        let screenWidth = UIScreen.main.bounds.size.width
+        let screenHeight = UIScreen.main.bounds.size.height
+        scrollView.contentSize = CGSize(width: screenWidth*CGFloat(subViewController.count), height: screenHeight)
+        
+        for (dex, vc) in subViewController.enumerated() {
+            addChildViewController(vc)
+            vc.view.frame = CGRect(origin: .init(x: screenWidth*CGFloat(dex), y: 0), size: scrollView.bounds.size)
+            scrollView.addSubview(vc.view)
+        }
+        
     }
 
-    
+    @IBAction func selectIndex(_ sender: UIButton) {
+        UIView.animate(withDuration: 0.5) {[weak self] in
+            self?.indicateView.center = CGPoint(x: sender.center.x, y: self?.indicateView.center.y ?? 0)
+        }
+    }
+
 }
 
 extension MTPickerViewController: MTImagePickerControllerDelegate {
     
-    func imagePickerController(picker: MTImagePickerController, didFinishPickingWithPhotosModels models: [MTImagePickerPhotosModel]) {
+    private func imagePickerController(picker: MTImagePickerController, didFinishPickingWithPhotosModels models: [MTImagePickerPhotosModel]) {
         if models.count > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now()+4) { [weak self] in
                 
@@ -70,4 +77,13 @@ extension MTPickerViewController: MTImagePickerControllerDelegate {
         }
         
     }
+    
+    @objc func showToolBarView(isShow: Bool) {
+        if isShow == true {
+            stackView.isHidden = false
+        }else{
+            stackView.isHidden = true
+        }
+    }
+
 }
