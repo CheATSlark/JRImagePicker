@@ -16,6 +16,8 @@
 		B5B24F0C02CBE13C27500F6E8020DAE4 /* JRImagePicker-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 659C3AF693BD7D4E06CBA4288396BDD5 /* JRImagePicker-dummy.m */; };
 		CA1905D54DFE07CD78D848921F05370E /* Pods-JRImagePicker_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 72773C2A1EC5E9DF98FD6DE878D8A3D7 /* Pods-JRImagePicker_Example-dummy.m */; };
 		D95D9AFFEB6B2BA2E51E9296DAAEFF09 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		F40DC6152514573B008767F3 /* JRPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40DC6142514573B008767F3 /* JRPhotoCapture.swift */; };
+		F40DC61A251497F3008767F3 /* JRPostPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40DC619251497F2008767F3 /* JRPostPhotoCapture.swift */; };
 		F44FE6BE2510BA13006A846B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F44FE6BD2510BA13006A846B /* Assets.xcassets */; };
 		F44FE6DD2510BA78006A846B /* MTImagePickerPhotosModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6C02510BA78006A846B /* MTImagePickerPhotosModel.swift */; };
 		F44FE6DE2510BA78006A846B /* MTImagePickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6C12510BA78006A846B /* MTImagePickerModel.swift */; };
@@ -93,6 +95,8 @@
 		BA12166EA6DBBA941724ED751A47F22D /* Pods-JRImagePicker_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JRImagePicker_Tests-dummy.m"; sourceTree = "<group>"; };
 		E5C992402B3281E65300729A5D9BAC77 /* Pods_JRImagePicker_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JRImagePicker_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB37A6F773AFC4649CBFA435B8C2DB37 /* JRImagePicker-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JRImagePicker-umbrella.h"; sourceTree = "<group>"; };
+		F40DC6142514573B008767F3 /* JRPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JRPhotoCapture.swift; sourceTree = "<group>"; };
+		F40DC619251497F2008767F3 /* JRPostPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JRPostPhotoCapture.swift; sourceTree = "<group>"; };
 		F44FE6BD2510BA13006A846B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = JRImagePicker/Assets/Assets.xcassets; sourceTree = "<group>"; };
 		F44FE6C02510BA78006A846B /* MTImagePickerPhotosModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerPhotosModel.swift; sourceTree = "<group>"; };
 		F44FE6C12510BA78006A846B /* MTImagePickerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerModel.swift; sourceTree = "<group>"; };
@@ -312,6 +316,8 @@
 			isa = PBXGroup;
 			children = (
 				F44FE6D62510BA78006A846B /* Extensions.swift */,
+				F40DC6142514573B008767F3 /* JRPhotoCapture.swift */,
+				F40DC619251497F2008767F3 /* JRPostPhotoCapture.swift */,
 			);
 			name = Common;
 			path = JRImagePicker/Classes/Common;
@@ -510,6 +516,7 @@
 				F44FE6DF2510BA78006A846B /* MTImagePickerDataSource.swift in Sources */,
 				F44FE6E12510BA78006A846B /* VideoPickerPreviewCell.swift in Sources */,
 				F44FE6E82510BA78006A846B /* ImagePickerPreviewCell.swift in Sources */,
+				F40DC6152514573B008767F3 /* JRPhotoCapture.swift in Sources */,
 				F44FE6E62510BA78006A846B /* MTImagePickerCell.swift in Sources */,
 				F44FE6E42510BA78006A846B /* JYPCropView.swift in Sources */,
 				F44FE6EC2510BA78006A846B /* Extensions.swift in Sources */,
@@ -519,6 +526,7 @@
 				F44FE6F02510BA78006A846B /* MTImagePickerController.swift in Sources */,
 				F44FE6FB2511FA43006A846B /* MTTakePhotoController.swift in Sources */,
 				F44FE6DE2510BA78006A846B /* MTImagePickerModel.swift in Sources */,
+				F40DC61A251497F3008767F3 /* JRPostPhotoCapture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

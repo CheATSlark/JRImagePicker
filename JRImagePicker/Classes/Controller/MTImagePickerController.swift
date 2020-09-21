@@ -80,6 +80,15 @@ public class MTImagePickerController:UINavigationController {
         }
     }
     
+    public class var instancePhoto:MTImagePickerController {
+        get {
+            let controller = MTTakePhotoController.instance
+            let navigation = MTImagePickerController(rootViewController: controller)
+            return navigation
+        }
+    }
+    
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         navigationBar.tintColor = jColor(color: 0x75C6C1)

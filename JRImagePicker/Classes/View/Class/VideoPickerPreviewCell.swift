@@ -74,7 +74,7 @@ class VideoPickerPreviewCell:UICollectionViewCell{
         if let playerItem = self.model.getAVPlayerItem() {
             self.avPlayer.replaceCurrentItem(with: playerItem)
             if let currentItem = self.avPlayer.currentItem {
-                self.avPlayer.addBoundaryTimeObserver(forTimes: [currentItem.asset.duration as NSValue], queue: nil) {
+                self.avPlayer.addBoundaryTimeObserver(forTimes: [currentItem.asset.duration.value as NSValue], queue: nil) {
                     [unowned self] in
                     DispatchQueue.main.async {
                         self.avPlayer.seek(to: CMTime(value: 0 , timescale: 30))

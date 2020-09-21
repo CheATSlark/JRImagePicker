@@ -154,8 +154,21 @@ extension Bundle {
         }
         return Bundle(url: resourcesBundleUrl)
     }
+    
+    static func getImage(name: String) -> UIImage? {
+        let bundle = Bundle(for: MTImagePickerController.self)
+        if let url = bundle.url(forResource: "MTImagePicker", withExtension: "bundle"){
+            let targetBundle = Bundle(url: url)
+            return  UIImage(named: name, in: targetBundle, compatibleWith: nil)
+        }
+       
+        if #available(iOS 13.0, *) {
+            return UIImage(named: name, in: bundle, with: nil)
+        } else {
+            return UIImage(named: name)
+        }
+    }
 }
-
 
 
 
