@@ -13,18 +13,25 @@ import UIKit
     case Video
 }
 
+public protocol MTImagePickerControllerDelegate:NSObjectProtocol {
+   
+    func imagePickerController(models:[MTImagePickerPhotosModel])
+    
+    func imagePickerControllerDidCancel()
+    
+    func showToolBarView(isShow: Bool)
+}
 
-@objc public protocol MTImagePickerControllerDelegate:NSObjectProtocol {
-    // Implement it when setting source to MTImagePickerSource.ALAsset
-//    @objc optional func imagePickerController(picker:MTImagePickerController, didFinishPickingWithAssetsModels models:[MTImagePickerAssetsModel])
-    
-    // Implement it when setting source to MTImagePickerSource.Photos
-    @available(iOS 8.0, *)
-    @objc optional func imagePickerController(picker:MTImagePickerController, didFinishPickingWithPhotosModels models:[MTImagePickerPhotosModel])
-    
-    @objc optional func imagePickerControllerDidCancel(picker: MTImagePickerController)
-    
-    @objc optional func showToolBarView(isShow: Bool)
+extension MTImagePickerControllerDelegate {
+    func imagePickerController(models:[MTImagePickerPhotosModel]) {
+        
+    }
+    public func imagePickerControllerDidCancel() {
+        
+    }
+    func showToolBarView(isShow: Bool) {
+        
+    }
 }
 
 public class MTImagePickerController:UINavigationController {
@@ -35,15 +42,7 @@ public class MTImagePickerController:UINavigationController {
     public var isCrop: Bool = false
     
     public var selectedSource = [MTImagePickerModel]()
-    private var _source = MTImagePickerSource.Photos
-    public var source:MTImagePickerSource {
-        get {
-            return self._source
-        }
-        set {
-            self._source = newValue
-        }
-    }
+   
     
     public var mediaTypesNSArray:NSArray {
         get {
@@ -80,15 +79,6 @@ public class MTImagePickerController:UINavigationController {
         }
     }
     
-    public class var instancePhoto:MTImagePickerController {
-        get {
-            let controller = MTTakePhotoController.instance
-            let navigation = MTImagePickerController(rootViewController: controller)
-            return navigation
-        }
-    }
-    
-    
     public override func viewDidLoad() {
         super.viewDidLoad()
         navigationBar.tintColor = jColor(color: 0x75C6C1)
@@ -99,7 +89,7 @@ protocol MTImagePickerDataSourceDelegate:NSObjectProtocol {
     var selectedSource:[MTImagePickerModel] { get set }
     var maxCount:Int { get }
     var mediaTypes:[MTImagePickerMediaType] { get }
-    var source:MTImagePickerSource { get }
+
     func didFinishPicking()
     func didCancel()
     func showToolBarView(isShow: Bool)
@@ -108,40 +98,23 @@ protocol MTImagePickerDataSourceDelegate:NSObjectProtocol {
 extension MTImagePickerController:MTImagePickerDataSourceDelegate {
 
     func didFinishPicking() {
-        if self.source == .Photos {
-            self.imagePickerDelegate?.imagePickerController?(picker:self, didFinishPickingWithPhotosModels: selectedSource as! [MTImagePickerPhotosModel])
-            if isCrop == true && selectedSource.count > 0 {
-                
-                let pVc = self.presentingViewController
-                let vc = MTImageCropController.instance
-                vc.modalPresentationStyle = .fullScreen
-                vc.original = selectedSource[0]
-                vc.didFinishCropping = { [weak vc](image) in
-                    
-                     vc?.dismiss(animated: true, completion: nil)
-                }
-                self.dismiss(animated: false) { [weak pVc] in
-                    pVc?.present(vc, animated: true, completion: nil)
-                }
-            }else{
-                 self.dismiss(animated: true, completion: nil)
+        if let models  = selectedSource as? [MTImagePickerPhotosModel] {
+            let vc = MTImageResultController.instance
+            vc.resultList = { [weak self](list) in
+                self?.imagePickerDelegate?.imagePickerController(models: list)
             }
-            
-        } else {
-//            self.imagePickerDelegate?.imagePickerController?(picker:self, didFinishPickingWithAssetsModels: selectedSource as! [MTImagePickerAssetsModel])
+            vc.list = models
+            self.pushViewController(vc, animated: true)
         }
     }
 
     func didCancel() {
-        imagePickerDelegate?.imagePickerControllerDidCancel?(picker: self)
+        imagePickerDelegate?.imagePickerControllerDidCancel()
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc func showToolBarView(isShow: Bool) {
-        if  imagePickerDelegate?.responds(to: #selector(showToolBarView(isShow:))) == true {
-            imagePickerDelegate?.showToolBarView?(isShow: isShow)
-        }
-        
+    func showToolBarView(isShow: Bool) {
+        imagePickerDelegate?.showToolBarView(isShow: isShow)
     }
     
 }

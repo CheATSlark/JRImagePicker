@@ -90,6 +90,7 @@ class ImagePickerPreviewCell:UICollectionViewCell,UIScrollViewDelegate {
             image in
             if let image = image {
                 self.imageView.image = image
+                self.layoutSubviews()
             }
         }
     }

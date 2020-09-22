@@ -8,35 +8,20 @@
 
 import Foundation
 import Photos
-import AssetsLibrary
 
-@objc public enum MTImagePickerSource:Int {
-    case ALAsset
-    case Photos
-}
 
 class MTImagePickerDataSource {
     
-    class func fetch(type:MTImagePickerSource,mediaTypes:[MTImagePickerMediaType],complete:@escaping  ([MTImagePickerAlbumModel]) -> Void) {
+    class func fetch(mediaTypes:[MTImagePickerMediaType],complete:@escaping  ([MTImagePickerAlbumModel]) -> Void) {
         
         MTImagePickerDataSource.fetchByPhotos(mediaTypes: mediaTypes) { complete($0) }
     }
     
     // 可优化 这里简单复用代码，取数量最多的group作为默认所有相片的group
-    class func fetchDefault(type:MTImagePickerSource,mediaTypes:[MTImagePickerMediaType],complete:@escaping  (MTImagePickerAlbumModel) -> Void) {
-        if type == .ALAsset {
-//            MTImagePickerDataSource.fetchByALAsset(mediaTypes: mediaTypes) {
-//                if let model = ($0.max { $0.getAlbumCount() < $1.getAlbumCount() }) {
-//                    complete(model)
-//                }
-//            }
-        } else if type == .Photos {
-            if #available(iOS 8.0, *) {
-                MTImagePickerDataSource.fetchByPhotos(mediaTypes: mediaTypes) {
-                    if let model = ($0.max { $0.getAlbumCount() < $1.getAlbumCount() }) {
-                        complete(model)
-                    }
-                }
+    class func fetchDefault(mediaTypes:[MTImagePickerMediaType],complete:@escaping  (MTImagePickerAlbumModel) -> Void) {
+        MTImagePickerDataSource.fetchByPhotos(mediaTypes: mediaTypes) {
+            if let model = ($0.max { $0.getAlbumCount() < $1.getAlbumCount() }) {
+                complete(model)
             }
         }
     }

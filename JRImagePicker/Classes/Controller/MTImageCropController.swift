@@ -27,14 +27,7 @@ public class MTImageCropController: UIViewController {
             })
         }
     }
-    
-    //    var originalList: [MTImagePickerPhotosModel] = []{
-    //        didSet {
-    //            self.v.list = originalList
-    //            self.v.collection.reloadData()
-    //        }
-    //    }
-    
+        
     lazy var v: JYPCropView = {
        
         let cropView =  Bundle(for: MTImageCropController.self).loadNibNamed("JYPImagePickerViews", owner: nil, options: nil)?.first as! JYPCropView
@@ -59,27 +52,9 @@ public class MTImageCropController: UIViewController {
    public override func viewDidLoad() {
         super.viewDidLoad()
         setupToolbar()
-        //        configRightNavigationbar()
         setupGestureRecognizers()
         navigationController?.navigationBar.isHidden = true
     }
-    
-    //    override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
-    //        let btn = UIButton(type: .custom)
-    //        btn.setTitleColor(JMainTextBlackColor, for: .normal)
-    //        btn.setTitle("取消", for: .normal)
-    //        btn.sizeToFit()
-    //        btn.addTarget(target, action: action, for: .touchUpInside)
-    //        return UIBarButtonItem(customView: btn)
-    //    }
-    
-    //    func configRightNavigationbar(){
-    //        let item = UIBarButtonItem(title: "完成", style: .done, target: self, action: #selector(done))
-    //        item.textColor(color: JMainTextBlackColor)
-    //        self.navigationItem.setRightBarButton(item, animated: false)
-    //    }
-    
-    
     
     func setupToolbar() {
         v.cancelBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)

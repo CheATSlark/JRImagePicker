@@ -176,18 +176,13 @@ class MTImagePickerPreviewController:UIViewController,UICollectionViewDelegateFl
                     sender.setTitle("\(dex+1)/\(delegate.selectedSource.count)", for: .selected)
                 }
             }
-        } else {
-//            let alertView = FlashAlertView(message: "Maxium selected".localized, delegate: nil)
-//            alertView.show()
         }
+        
         if delegate.selectedSource.count > 0 {
             nextStepBtn.isEnabled = true
         }else{
             nextStepBtn.isEnabled = false
         }
     }
-    
-    
-    
 }
 

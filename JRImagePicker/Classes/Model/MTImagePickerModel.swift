@@ -39,7 +39,7 @@ public class MTImagePickerModel:NSObject {
         fatalError("getFileName has not been implemented")
     }
     
-    func getThumbImage(size:CGSize)-> UIImage? {
+    func getThumbImage(size:CGSize, asset: PHAsset)-> UIImage? {
         fatalError("getThumbImage has not been implemented")
     }
     

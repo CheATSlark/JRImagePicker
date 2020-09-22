@@ -6,11 +6,10 @@
 //
 
 import UIKit
+import Photos
 
-class MTTakePhotoController: UIViewController {
+public class MTTakePhotoController: UIViewController {
 
-    
-//    @IBOutlet weak var navigationBar: UINavigationBar!
     let photoCapture = JRPostPhotoCapture()
     @IBOutlet weak var previewViewContainer: UIView!
     @IBOutlet weak var flashBtn: UIButton!
@@ -20,18 +19,14 @@ class MTTakePhotoController: UIViewController {
     @IBOutlet weak var previewToTopConstratint: NSLayoutConstraint!
     @IBOutlet weak var previewToNavibarConstraint: NSLayoutConstraint!
     
+    public weak var imagePickerDelegate:MTImagePickerControllerDelegate?
     
+    let focusView = UIView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
     let screenWidth = UIScreen.main.bounds.size.width
+    var isInited = false
     
-    class var instance:MTTakePhotoController {
-        get {
-            let storyboard = UIStoryboard(name: "MTImagePicker", bundle:  Bundle(for: MTTakePhotoController.self))
-            let vc = storyboard.instantiateViewController(withIdentifier: "MTTakePhotoController") as! MTTakePhotoController
-            return vc
-        }
-    }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -39,20 +34,44 @@ class MTTakePhotoController: UIViewController {
         // Do any additional setup after loading the view.
         refreshZoomBtn()
         refreshFlashBtn()
+        
+        // Focus
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.focusTapped(_:)))
+        tapRecognizer.delegate = self
+        previewViewContainer.addGestureRecognizer(tapRecognizer)
+        
+        // Zoom
+        let pinchRecongizer = UIPinchGestureRecognizer(target: self, action: #selector(self.pinch(_:)))
+        pinchRecongizer.delegate = self
+        previewViewContainer.addGestureRecognizer(pinchRecongizer)
+    }
+    
+    public override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        previewToTopConstratint.constant = view.safeAreaInsets.top - (navigationController?.navigationBar.frame.size.height ?? 0)
     }
         
+    public override var prefersStatusBarHidden: Bool {
+        false
+    }
+    
+    
     func start() {
+   
         photoCapture.start(with: previewViewContainer) {
-            
+            DispatchQueue.main.async { [weak self] in
+                self?.isInited = true
+            }
         }
     }
     
     func end() {
+      
         photoCapture.stopCamera()
     }
     
     @IBAction func closeAction(_ sender: Any) {
-        
+        imagePickerDelegate?.imagePickerControllerDidCancel()
     }
     
     @IBAction func flipAction(_ sender: Any) {
@@ -72,9 +91,62 @@ class MTTakePhotoController: UIViewController {
     }
     
     @IBAction func shootAction(_ sender: Any) {
-        photoCapture.shoot { (data) in
+        photoCapture.shoot { [weak self](data) in
+            guard let shotImage = UIImage(data: data) else { return }
+            self?.photoCapture.stopCamera()
+            var localIdentifier: String?
+            PHPhotoLibrary.shared().performChanges {
+                let requset = PHAssetChangeRequest.creationRequestForAsset(from: shotImage)
+                localIdentifier =  requset.placeholderForCreatedAsset?.localIdentifier
+            } completionHandler: { (isSuccess, error) in
+                let assetResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier!], options: nil)
+                DispatchQueue.main.async {
+                    let vc = MTImageResultController.instance
+                    vc.resultList = { (list) in
+                        self?.imagePickerDelegate?.imagePickerController(models: list)
+                    }
+                    vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: assetResult.firstObject!)]
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
             
         }
+    }
+    
+    @objc
+    func focusTapped(_ recognizer: UITapGestureRecognizer) {
+        guard isInited else {
+            return
+        }
+        focus(recognizer: recognizer)
+    }
+    
+    func focus(recognizer: UITapGestureRecognizer) {
+
+        let point = recognizer.location(in: previewViewContainer)
+        
+        // Focus the capture
+        let viewsize = previewViewContainer.bounds.size
+        let newPoint = CGPoint(x: point.x/viewsize.width, y: point.y/viewsize.height)
+        photoCapture.focus(on: newPoint)
+        
+        // Animate focus view
+        focusView.center = point
+        configureFocusView(focusView)
+        view.addSubview(focusView)
+        animateFocusView(focusView)
+    }
+    
+    @objc
+    func pinch(_ recognizer: UIPinchGestureRecognizer) {
+        guard isInited else {
+            return
+        }
+        zoom(recognizer: recognizer)
+    }
+    
+    func zoom(recognizer: UIPinchGestureRecognizer) {
+        photoCapture.zoom(began: recognizer.state == .began, scale: recognizer.scale)
     }
     
     
@@ -107,14 +179,30 @@ class MTTakePhotoController: UIViewController {
         }
     }
     
-}
-
-extension MTTakePhotoController: UINavigationBarDelegate {
-    func navigationBar(_ navigationBar: UINavigationBar, didPush item: UINavigationItem) {
-        
+    func configureFocusView(_ v: UIView) {
+        v.alpha = 0.0
+        v.backgroundColor = UIColor.clear
+        v.layer.borderColor = UIColor.green.cgColor
+        v.layer.borderWidth = 1.0
+        v.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
     }
     
+    func animateFocusView(_ v: UIView) {
+        UIView.animate(withDuration: 0.8, delay: 0.0, usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 3.0, options: UIView.AnimationOptions.curveEaseIn,
+                       animations: {
+                        v.alpha = 1.0
+                        v.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        }, completion: { _ in
+            v.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            v.removeFromSuperview()
+        })
+    }
+    
+}
 
+extension MTTakePhotoController: UIGestureRecognizerDelegate {
+    
 }
 
 class MTTakePhotoNavigationController: UINavigationController {
@@ -124,5 +212,13 @@ class MTTakePhotoNavigationController: UINavigationController {
             let vc = storyboard.instantiateViewController(withIdentifier: "MTTakePhotoNavigationController") as! MTTakePhotoNavigationController
             return vc
         }
+    }
+    
+    override var childViewControllerForStatusBarHidden: UIViewController? {
+        return topViewController
+    }
+    
+    override var childViewControllerForStatusBarStyle: UIViewController? {
+        return topViewController
     }
 }

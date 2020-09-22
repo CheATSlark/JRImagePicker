@@ -40,7 +40,8 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
             albums.delegate = delegate
             view.addSubview(albums)
         }
-        albums?.chooseAlbum = { [weak self](group) in
+        albums?.chooseAlbum = { [weak self, albums](group) in
+            self?.titleBtn.isSelected = !(self?.titleBtn.isSelected ?? true)
             self?.change(group: group)
         }
         return albums
@@ -64,17 +65,20 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     
     
     private func buildMiddleButton() {
-        titleBtn.setTitleColor(jColor(color: 0x333333), for: .normal)
+        titleBtn.setTitleColor(UIColor.white, for: .normal)
         titleBtn.titleLabel?.font = UIFont.init(name: "PingFangSC-Medium", size: 18)
         titleBtn.bounds = CGRect(origin: .zero, size: .init(width: 100, height: 40))
-        titleBtn.addTarget(self, action: #selector(showAlbumsView), for: .touchUpInside)
+        titleBtn.addTarget(self, action: #selector(showAlbumsView(sender:)), for: .touchUpInside)
         navigationItem.titleView = titleBtn
     }
     
     @objc
-    private func showAlbumsView(){
-        albumsView?.isHidden = false
-        albumsView?.fetchAlbums()
+    private func showAlbumsView(sender: UIButton){
+        sender.isSelected = !sender.isSelected
+        albumsView?.isHidden = !sender.isSelected
+        if sender.isSelected == true {
+            albumsView?.fetchAlbums()
+        }
     }
     
     
@@ -88,17 +92,15 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     
     func loadImages(){
         if let title = self.groupModel?.getAlbumName() {
-            titleBtn.setTitle(title, for: .normal)
+            titleBtn.set(image: Bundle.getImage(name: "pull_down"), title: title, titlePosition: .left, additionalSpacing: 4, state: .normal)
+            titleBtn.set(image: Bundle.getImage(name: "pull_up"), title: title, titlePosition: .left, additionalSpacing: 4, state: .selected)
         }
-//        let loading = LoadingViewController()
-//        loading.show(text: "Loading...".localized)
+
         if self.groupModel == nil {
             MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
                 if group == nil {
-//                    loading.dismiss()
                 }else{
                     group?.getMTImagePickerModelsListAsync(complete: { [weak self](models) in
-//                        loading.dismiss()
                         self?.dataSource = models
                         self?.collectionView.reloadData()
                         self?.scrollToBottom()
@@ -107,7 +109,6 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
             }
         }else{
             self.groupModel?.getMTImagePickerModelsListAsync { (models) in
-//                loading.dismiss()
                 self.dataSource = models
                 self.collectionView.reloadData()
                 self.scrollToBottom()
@@ -125,8 +126,14 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         super.viewWillAppear(animated)
         self.collectionView.reloadData()
         self.lbSelected.text = String(delegate.selectedSource.count)
-        self.btnPreview.isEnabled = !(delegate.selectedSource.count == 0)
-        self.delegate.showToolBarView(isShow: true)
+        let isShow = !(delegate.selectedSource.count == 0)
+        self.btnPreview.isEnabled = isShow
+        if delegate.maxCount > 1 {
+            toolbarView.isHidden = !isShow
+            self.delegate.showToolBarView(isShow: !isShow)
+        }else{
+            self.delegate.showToolBarView(isShow: true)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -167,6 +174,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
             cell.btnCheck.isHidden = false
         }
         let model = self.dataSource[indexPath.row]
+        ///  视频
         if model.mediaType == .Video   {
             cell.videoView.isHidden = false
             model.getVideoDurationAsync(){
@@ -179,24 +187,30 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         } else {
             cell.videoView.isHidden = true
         }
-        cell.indexPath = indexPath
         
+        /// 图片
+        cell.indexPath = indexPath
         if let albumModel = groupModel as? MTImagePickerPhotosAlbumModel {
+            // 在不同的集合里，PHImageRequestID 的值 可以重复。
+            
             let imageRequstId = albumModel.requestImage(index: indexPath.row, targetSize: cellSize()) { (image, index) in
+                // 对应的cell 展示图片
                 if cell.indexPath.row == index {
                     if let resultImage = image {
                         cell.imageView.image = resultImage
+                        cell.imageId = nil
                     }
-                }else{
-
                 }
            }
             
+           // 滑动的时候取消上次还没请求回来的请求
            if let imageId = cell.imageId, let requestId = imageRequstId, imageId != requestId {
                 albumModel.cancelRequsetImage(requstId: imageId)
             }
             cell.imageId = imageRequstId
         }
+        
+        /// 按钮状态
         cell.btnCheck.isSelected = delegate.selectedSource.contains(model)
         if let dex = delegate.selectedSource.firstIndex(of: model) {
             cell.btnCheck.setTitle("\(dex+1)", for: .selected)
@@ -209,7 +223,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         UIView.performWithoutAnimation {
             cell.layoutIfNeeded()
         }
-        
+    
         return cell
     }
     
@@ -220,6 +234,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         }else{
             self.pushToImageSelectorPreviewController(initialIndexPath: indexPath, dataSource: self.dataSource)
         }
+        
         delegate.showToolBarView(isShow: false)
     }
     
@@ -243,8 +258,14 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
             self.lbSelected.heartbeatsAnimation(duration: 0.15)
             self.btnPreview.isEnabled = !(delegate.selectedSource.count == 0)
         } else {
-//            let alertView = FlashAlertView(message: "Maxium selected".localized, delegate: nil)
-//            alertView.show()
+
+        }
+        if delegate.selectedSource.count > 0 {
+            toolbarView.isHidden = false
+            delegate.showToolBarView(isShow: false)
+        }else{
+            toolbarView.isHidden = true
+            delegate.showToolBarView(isShow: true)
         }
     }
     
@@ -299,3 +320,52 @@ class MTImagePickerCollectionView:UICollectionView {
     var prevOffset:CGFloat = 0
 }
 
+
+private extension UIButton {
+    
+    func set(image anImage: UIImage?, title: String,
+             titlePosition: UIView.ContentMode, additionalSpacing: CGFloat, state: UIControl.State){
+        self.imageView?.contentMode = .center
+        self.setImage(anImage, for: state)
+        
+        positionLabelRespectToImage(title: title, position: titlePosition, spacing: additionalSpacing)
+        
+        self.titleLabel?.contentMode = .center
+        self.setTitle(title, for: state)
+    }
+    
+    private func positionLabelRespectToImage(title: String, position: UIView.ContentMode,
+        spacing: CGFloat) {
+        let imageSize = self.imageRect(forContentRect: self.frame)
+        let titleFont = self.titleLabel?.font!
+        let titleSize = title.size(withAttributes: [NSAttributedString.Key.font: titleFont!])
+         
+        var titleInsets: UIEdgeInsets
+        var imageInsets: UIEdgeInsets
+         
+        switch (position){
+        case .top:
+            titleInsets = UIEdgeInsets(top: -(imageSize.height + titleSize.height + spacing),
+                left: -(imageSize.width), bottom: 0, right: 0)
+            imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width)
+        case .bottom:
+            titleInsets = UIEdgeInsets(top: (imageSize.height + titleSize.height + spacing),
+                left: -(imageSize.width), bottom: 0, right: 0)
+            imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width)
+        case .left:
+            titleInsets = UIEdgeInsets(top: 0, left: -(imageSize.width * 2), bottom: 0, right: 0)
+            imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0,
+                right: -(titleSize.width * 2 + spacing))
+        case .right:
+            titleInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -spacing)
+            imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        default:
+            titleInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
+         
+        self.titleEdgeInsets = titleInsets
+        self.imageEdgeInsets = imageInsets
+    }
+    
+}

@@ -21,6 +21,8 @@ protocol JRPhotoCapture: class {
     func focus(on point: CGPoint)
     /// 改变比例
     func updateLayer(frame: CGRect)
+    /// 聚焦
+    func zoom(began: Bool, scale: CGFloat)
     
     var hasFlash: Bool { get }
     /// 视频图层
@@ -43,6 +45,8 @@ protocol JRPhotoCapture: class {
     var sessionQueue: DispatchQueue { get }
     /// 是否设置预览视图
     var isPreviewSetup: Bool { get set }
+    
+    var initVideoZoomFactor: CGFloat { get set }
 }
 
 extension JRPhotoCapture {
@@ -169,6 +173,29 @@ extension JRPhotoCapture {
         guard let deviceInput = deviceInput else { return }
         if session.canAddInput(deviceInput) {
             session.addInput(deviceInput)
+        }
+    }
+        
+    func zoom(began: Bool, scale: CGFloat) {
+        guard let device = device else {
+            return
+        }
+        
+        if began {
+            initVideoZoomFactor = device.videoZoomFactor
+            return
+        }
+        
+        do {
+            try device.lockForConfiguration()
+            defer { device.unlockForConfiguration() }
+            let minAvailableVideoZoomFactor: CGFloat = device.minAvailableVideoZoomFactor
+            let maxAvailableVideoZoomFactor: CGFloat = device.activeFormat.videoMaxZoomFactor
+            let desiredZoomFactor = initVideoZoomFactor * scale
+            device.videoZoomFactor = max(minAvailableVideoZoomFactor,
+                                         min(desiredZoomFactor, maxAvailableVideoZoomFactor))
+        } catch let error {
+           print("💩 \(error)")
         }
     }
 }

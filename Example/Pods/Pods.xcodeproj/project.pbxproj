@@ -18,6 +18,8 @@
 		D95D9AFFEB6B2BA2E51E9296DAAEFF09 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		F40DC6152514573B008767F3 /* JRPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40DC6142514573B008767F3 /* JRPhotoCapture.swift */; };
 		F40DC61A251497F3008767F3 /* JRPostPhotoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40DC619251497F2008767F3 /* JRPostPhotoCapture.swift */; };
+		F4443E612518D46F005B535B /* MTImageResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4443E602518D46F005B535B /* MTImageResultController.swift */; };
+		F4443E662518D5AD005B535B /* ImageResultClCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4443E652518D5AD005B535B /* ImageResultClCell.swift */; };
 		F44FE6BE2510BA13006A846B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F44FE6BD2510BA13006A846B /* Assets.xcassets */; };
 		F44FE6DD2510BA78006A846B /* MTImagePickerPhotosModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6C02510BA78006A846B /* MTImagePickerPhotosModel.swift */; };
 		F44FE6DE2510BA78006A846B /* MTImagePickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6C12510BA78006A846B /* MTImagePickerModel.swift */; };
@@ -36,10 +38,8 @@
 		F44FE6EB2510BA78006A846B /* MTImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44FE6D32510BA78006A846B /* MTImagePicker.storyboard */; };
 		F44FE6EC2510BA78006A846B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6D62510BA78006A846B /* Extensions.swift */; };
 		F44FE6ED2510BA78006A846B /* MTImagePickerPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6D82510BA78006A846B /* MTImagePickerPreviewController.swift */; };
-		F44FE6EE2510BA78006A846B /* MTImagePickerAlbumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6D92510BA78006A846B /* MTImagePickerAlbumsController.swift */; };
 		F44FE6EF2510BA78006A846B /* MTImagePickerAssetsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6DA2510BA78006A846B /* MTImagePickerAssetsController.swift */; };
 		F44FE6F02510BA78006A846B /* MTImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6DB2510BA78006A846B /* MTImagePickerController.swift */; };
-		F44FE6F12510BA78006A846B /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6DC2510BA78006A846B /* LoadingViewController.swift */; };
 		F44FE6F72510C49E006A846B /* MTImageCropController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6F62510C49E006A846B /* MTImageCropController.swift */; };
 		F44FE6F92511E6DD006A846B /* MTPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6F82511E6DD006A846B /* MTPickerViewController.swift */; };
 		F44FE6FB2511FA43006A846B /* MTTakePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6FA2511FA43006A846B /* MTTakePhotoController.swift */; };
@@ -97,6 +97,8 @@
 		EB37A6F773AFC4649CBFA435B8C2DB37 /* JRImagePicker-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "JRImagePicker-umbrella.h"; sourceTree = "<group>"; };
 		F40DC6142514573B008767F3 /* JRPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JRPhotoCapture.swift; sourceTree = "<group>"; };
 		F40DC619251497F2008767F3 /* JRPostPhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JRPostPhotoCapture.swift; sourceTree = "<group>"; };
+		F4443E602518D46F005B535B /* MTImageResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTImageResultController.swift; sourceTree = "<group>"; };
+		F4443E652518D5AD005B535B /* ImageResultClCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageResultClCell.swift; sourceTree = "<group>"; };
 		F44FE6BD2510BA13006A846B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = JRImagePicker/Assets/Assets.xcassets; sourceTree = "<group>"; };
 		F44FE6C02510BA78006A846B /* MTImagePickerPhotosModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerPhotosModel.swift; sourceTree = "<group>"; };
 		F44FE6C12510BA78006A846B /* MTImagePickerModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerModel.swift; sourceTree = "<group>"; };
@@ -116,10 +118,8 @@
 		F44FE6D42510BA78006A846B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MTImagePicker.storyboard; sourceTree = "<group>"; };
 		F44FE6D62510BA78006A846B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F44FE6D82510BA78006A846B /* MTImagePickerPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerPreviewController.swift; sourceTree = "<group>"; };
-		F44FE6D92510BA78006A846B /* MTImagePickerAlbumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerAlbumsController.swift; sourceTree = "<group>"; };
 		F44FE6DA2510BA78006A846B /* MTImagePickerAssetsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerAssetsController.swift; sourceTree = "<group>"; };
 		F44FE6DB2510BA78006A846B /* MTImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerController.swift; sourceTree = "<group>"; };
-		F44FE6DC2510BA78006A846B /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		F44FE6F62510C49E006A846B /* MTImageCropController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImageCropController.swift; sourceTree = "<group>"; };
 		F44FE6F82511E6DD006A846B /* MTPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTPickerViewController.swift; sourceTree = "<group>"; };
 		F44FE6FA2511FA43006A846B /* MTTakePhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTTakePhotoController.swift; sourceTree = "<group>"; };
@@ -297,6 +297,7 @@
 				F44FE6CB2510BA78006A846B /* MTImagePickerCell.swift */,
 				F44FE6CD2510BA78006A846B /* ImagePickerPreviewCell.swift */,
 				F44FE6CE2510BA78006A846B /* ImageAlbumsView.swift */,
+				F4443E652518D5AD005B535B /* ImageResultClCell.swift */,
 				F44FE6C92510BA78006A846B /* JYPCropView.swift */,
 				F44FE6CC2510BA78006A846B /* JYPImagePickerViews.xib */,
 			);
@@ -327,13 +328,12 @@
 			isa = PBXGroup;
 			children = (
 				F44FE6D82510BA78006A846B /* MTImagePickerPreviewController.swift */,
-				F44FE6D92510BA78006A846B /* MTImagePickerAlbumsController.swift */,
 				F44FE6DA2510BA78006A846B /* MTImagePickerAssetsController.swift */,
 				F44FE6DB2510BA78006A846B /* MTImagePickerController.swift */,
 				F44FE6F62510C49E006A846B /* MTImageCropController.swift */,
-				F44FE6DC2510BA78006A846B /* LoadingViewController.swift */,
 				F44FE6F82511E6DD006A846B /* MTPickerViewController.swift */,
 				F44FE6FA2511FA43006A846B /* MTTakePhotoController.swift */,
+				F4443E602518D46F005B535B /* MTImageResultController.swift */,
 			);
 			name = Controller;
 			path = JRImagePicker/Classes/Controller;
@@ -508,13 +508,13 @@
 				F44FE6ED2510BA78006A846B /* MTImagePickerPreviewController.swift in Sources */,
 				F44FE6E52510BA78006A846B /* MTImagePickerFlowLayout.swift in Sources */,
 				F44FE6F92511E6DD006A846B /* MTPickerViewController.swift in Sources */,
-				F44FE6F12510BA78006A846B /* LoadingViewController.swift in Sources */,
-				F44FE6EE2510BA78006A846B /* MTImagePickerAlbumsController.swift in Sources */,
 				F44FE6EF2510BA78006A846B /* MTImagePickerAssetsController.swift in Sources */,
 				B5B24F0C02CBE13C27500F6E8020DAE4 /* JRImagePicker-dummy.m in Sources */,
 				F44FE6F72510C49E006A846B /* MTImageCropController.swift in Sources */,
 				F44FE6DF2510BA78006A846B /* MTImagePickerDataSource.swift in Sources */,
+				F4443E612518D46F005B535B /* MTImageResultController.swift in Sources */,
 				F44FE6E12510BA78006A846B /* VideoPickerPreviewCell.swift in Sources */,
+				F4443E662518D5AD005B535B /* ImageResultClCell.swift in Sources */,
 				F44FE6E82510BA78006A846B /* ImagePickerPreviewCell.swift in Sources */,
 				F40DC6152514573B008767F3 /* JRPhotoCapture.swift in Sources */,
 				F44FE6E62510BA78006A846B /* MTImagePickerCell.swift in Sources */,

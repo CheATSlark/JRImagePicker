@@ -30,17 +30,3 @@ class ViewController: UIViewController {
     
 }
 
-extension ViewController: MTImagePickerControllerDelegate {
-    
-    func imagePickerController(picker: MTImagePickerController, didFinishPickingWithPhotosModels models: [MTImagePickerPhotosModel]) {
-        if models.count > 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now()+4) { [weak self] in
-                
-            }
-            
-        }else{
-        
-        }
-        
-    }
-}

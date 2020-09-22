@@ -18,10 +18,23 @@ public class MTPickerViewController: UIViewController {
     var subViewController: [UIViewController] = []
     @IBOutlet weak var contentCollectionView: UICollectionView!
     
+    /// 图片选择器的最大数目
+    public var pickerMaxCount = 1
+    /// 是否需要编辑
+    public var imageIsEdit: Bool = true
+    
+    public var pickedImages: (([MTImagePickerPhotosModel]) -> Void)?
+    
+    private var isHiddenStatusBar: Bool = true
+    public override var prefersStatusBarHidden: Bool {
+        isHiddenStatusBar
+    }
+    
+    
     lazy var photoAssetVc: MTImagePickerController = {
         let vc = MTImagePickerController.instance
-        vc.maxCount = 9
-        vc.isCrop = true
+        vc.maxCount = pickerMaxCount
+        vc.isCrop = imageIsEdit
         vc.imagePickerDelegate = self
         vc.modalPresentationStyle = .fullScreen
         return vc
@@ -29,32 +42,24 @@ public class MTPickerViewController: UIViewController {
     
     lazy var takePhotoVc: MTTakePhotoNavigationController = {
         let vc = MTTakePhotoNavigationController.instance
+        if let takePhoto = vc.viewControllers.first as? MTTakePhotoController {
+            takePhoto.imagePickerDelegate = self
+        }
         return vc
     }()
     
     public class var instance:MTPickerViewController {
-             get {
-                 let storyboard = UIStoryboard(name: "MTImagePicker", bundle:  Bundle(for: MTPickerViewController.self))
-                 let vc = storyboard.instantiateViewController(withIdentifier: "MTPickerViewController") as! MTPickerViewController
-                 return vc
-             }
-         }
+        get {
+            let storyboard = UIStoryboard(name: "MTImagePicker", bundle:  Bundle(for: MTPickerViewController.self))
+            let vc = storyboard.instantiateViewController(withIdentifier: "MTPickerViewController") as! MTPickerViewController
+            return vc
+        }
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
         subViewController = [photoAssetVc, takePhotoVc]
-//        let screenWidth = UIScreen.main.bounds.size.width
-//        let screenHeight = UIScreen.main.bounds.size.height
-//        scrollView.contentSize = CGSize(width: screenWidth*CGFloat(subViewController.count), height: screenHeight)
-        
-//        for (dex, vc) in subViewController.enumerated() {
-//            addChildViewController(vc)
-//            vc.view.frame = CGRect(origin: .init(x: screenWidth*CGFloat(dex), y: 0), size: scrollView.bounds.size)
-//            scrollView.addSubview(vc.view)
-//        }
-        
     }
 
     @IBAction func selectIndex(_ sender: UIButton) {
@@ -64,14 +69,10 @@ public class MTPickerViewController: UIViewController {
         
         contentCollectionView.scrollToItem(at: IndexPath(row: toolBtns.index(of: sender) ?? 0, section: 0), at: .centeredHorizontally, animated: true)
         switch sender {
-//        case photoAssetBtn:
-//            scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
         case takePhotoBtn:
-//            scrollView.setContentOffset(CGPoint(x: UIScreen.main.bounds.size.width, y: 0), animated: true)
             if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
                 vc.start()
             }
-            
         default:
             if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
                 vc.end()
@@ -105,38 +106,16 @@ extension MTPickerViewController: UICollectionViewDelegate, UICollectionViewData
         return CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
     }
     
-
-    
-//    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if let vc = subViewController[indexPath.row] as? MTTakePhotoController {
-//            vc.start()
-//        }
-//    }
-//    
-//    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if let vc = subViewController[indexPath.row] as? MTTakePhotoController {
-//            vc.end()
-//        }
-//    }
-    
 }
 
 
 extension MTPickerViewController: MTImagePickerControllerDelegate {
     
-    private func imagePickerController(picker: MTImagePickerController, didFinishPickingWithPhotosModels models: [MTImagePickerPhotosModel]) {
-        if models.count > 0 {
-            DispatchQueue.main.asyncAfter(deadline: .now()+4) { [weak self] in
-                
-            }
-            
-        }else{
-        
-        }
-        
+    public func imagePickerController(models: [MTImagePickerPhotosModel]) {
+        pickedImages?(models)
     }
     
-    @objc func showToolBarView(isShow: Bool) {
+    public func showToolBarView(isShow: Bool) {
         if isShow == true {
             stackView.isHidden = false
             indicateBkgView.isHidden = false

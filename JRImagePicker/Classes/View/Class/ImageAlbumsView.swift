@@ -18,11 +18,12 @@ class ImageAlbumsView: UIView {
         super.awakeFromNib()
         table.delegate = self
         table.dataSource = self
-        table.register(UINib(nibName: "ImageAlbumTbCell", bundle: Bundle(for: ImageAlbumsView.self)), forCellReuseIdentifier: "cell")        
+        table.register(UINib(nibName: "ImageAlbumTbCell", bundle: Bundle(for: ImageAlbumsView.self)), forCellReuseIdentifier: "cell")
+        table.tableFooterView = UIView()
     }
     
     func fetchAlbums(){
-        MTImagePickerDataSource.fetch(type: delegate.source, mediaTypes: delegate.mediaTypes, complete: { [unowned self](dataSource) in
+        MTImagePickerDataSource.fetch(mediaTypes: delegate.mediaTypes, complete: { [unowned self](dataSource) in
             self.dataSource = dataSource
             DispatchQueue.main.async {
                 self.table.reloadData()

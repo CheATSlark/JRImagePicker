@@ -33,12 +33,13 @@ public class MTImagePickerPhotosModel : MTImagePickerModel {
         return nil
     }
     
-    override func getThumbImage(size:CGSize)-> UIImage? {
+    override func getThumbImage(size:CGSize, asset: PHAsset)-> UIImage? {
         var img:UIImage?
         let options = PHImageRequestOptions()
-        options.deliveryMode = .fastFormat
+        options.deliveryMode = .opportunistic
         options.isSynchronous = true
-        PHImageManager.default().requestImage(for: self.phasset, targetSize: size, contentMode: .aspectFill, options: options) {
+        
+        PHImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options) {
             image,infoDict in
             img = image
             
@@ -160,7 +161,7 @@ class MTImagePickerPhotosAlbumModel:MTImagePickerAlbumModel {
     override func getAlbumImage(size:CGSize) -> UIImage? {
         if let asset = self.result.object(at: 0) as? PHAsset {
             let model = MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)
-            return model.getThumbImage(size: size)
+            return model.getThumbImage(size: size, asset: asset)
         }
         return nil
     }
@@ -207,7 +208,7 @@ class MTImagePickerPhotosAlbumModel:MTImagePickerAlbumModel {
     
     func requestImage(index: Int, targetSize: CGSize, complete:@escaping ((UIImage?, Int))->Void) -> PHImageRequestID? {
         if let asset = result[index] as? PHAsset {
-         return  imageManager?.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: nil, resultHandler: { (image, _) in
+         return  imageManager?.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: nil, resultHandler: { (image, info) in
                 complete((image, index))
          })
         }else{
