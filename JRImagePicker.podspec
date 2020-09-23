@@ -20,12 +20,12 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
   JRImagePicker can use as a picker or a camera
                        DESC
-
-  s.homepage         = 'https://github.com/jruijqx@163.com/JRImagePicker'
+                       
+  s.homepage         = 'https://github.com/CheATSlark/JRImagePicker.git'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'jruijqx@163.com' => 'jiaoruijie@ddcx-inc.com' }
-  s.source           = { :git => 'https://github.com/jruijqx@163.com/JRImagePicker.git', :tag => s.version.to_s }
+  s.author           = { 'jerry' => 'jruijqx@163.com' }
+  s.source           = { :git => 'https://github.com/CheATSlark/JRImagePicker.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
