@@ -11,6 +11,7 @@ import AssetsLibrary
 import CoreImage
 import Foundation
 import Photos
+import PhotosUI
 
 class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource,UICollectionViewDelegate {
     
@@ -27,6 +28,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     @IBOutlet weak var btnPreview: UIButton!
     @IBOutlet weak var imageCollection: MTImagePickerCollectionView!
     @IBOutlet weak var toolbarView: UIView!
+    @IBOutlet weak var manageBtn: UIButton!
     
     private var dataSource = [MTImagePickerModel]()
     private var initialScrollDone:Bool = false
@@ -86,6 +88,12 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         loadImages()
+        if #available(iOS 14.0, *){
+            manageBtn.isHidden = false
+        }else{
+            manageBtn.isHidden = true
+        }
+        PHPhotoLibrary.shared().register(self)
     }
     
     
@@ -99,6 +107,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         if self.groupModel == nil {
             MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
                 if group == nil {
+                    /// 没有获取到图片
                 }else{
                     group?.getMTImagePickerModelsListAsync(complete: { [weak self](models) in
                         self?.dataSource = models
@@ -126,6 +135,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         super.viewWillAppear(animated)
         self.collectionView.reloadData()
         self.lbSelected.text = String(delegate.selectedSource.count)
+        self.lbSelected.isHidden = delegate.selectedSource.count == 0
         let isShow = !(delegate.selectedSource.count == 0)
         self.btnPreview.isEnabled = isShow
         if delegate.maxCount > 1 {
@@ -255,6 +265,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
                 sender.setTitle("\(dex+1)", for: .selected)
             }
             self.lbSelected.text = String(delegate.selectedSource.count)
+            self.lbSelected.isHidden = delegate.selectedSource.count == 0
             self.lbSelected.heartbeatsAnimation(duration: 0.15)
             self.btnPreview.isEnabled = !(delegate.selectedSource.count == 0)
         } else {
@@ -311,7 +322,27 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     @IBAction func btnCancelTouch(_ sender: AnyObject) {
         delegate.didCancel()
     }
+    
+    @IBAction func addResource(_ sender: Any) {
+        if #available(iOS 14.0, *) {
+            PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self)
+        }
+    }
 }
+
+extension MTImagePickerAssetsController: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        DispatchQueue.main.async { [weak self] in
+            MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
+                self?.groupModel = group
+                self?.loadImages()
+            }
+        }
+        
+    }
+}
+
+
 
 class MTImagePickerCollectionView:UICollectionView {
     @IBOutlet weak var trailing: NSLayoutConstraint!

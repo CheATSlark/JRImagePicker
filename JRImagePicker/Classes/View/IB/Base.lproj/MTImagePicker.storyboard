@@ -231,6 +231,16 @@
                                 <action selector="btnCancelTouch:" destination="M8Z-D7-a26" id="bJl-zD-ofn"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="XEQ-8Z-0Xj">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eU7-Jc-uNj">
+                                <rect key="frame" x="276" y="5" width="83" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="管理"/>
+                                <connections>
+                                    <action selector="addResource:" destination="M8Z-D7-a26" eventType="touchUpInside" id="8jm-ZE-xGf"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
@@ -238,6 +248,7 @@
                         <outlet property="collectionView" destination="wxQ-x3-zYg" id="5Eu-dR-TTl"/>
                         <outlet property="imageCollection" destination="wxQ-x3-zYg" id="K6i-Xf-4tm"/>
                         <outlet property="lbSelected" destination="htg-6y-iS6" id="mWl-T9-bCP"/>
+                        <outlet property="manageBtn" destination="eU7-Jc-uNj" id="rvp-ua-G5W"/>
                         <outlet property="toolbarView" destination="MLh-dh-Pzn" id="ADC-9U-Mge"/>
                     </connections>
                 </viewController>
@@ -776,6 +787,9 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SO3-lH-yYo">
                                                     <rect key="frame" x="136.66666666666666" y="166" width="62.333333333333343" height="30"/>
                                                     <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edit_btn_bkg" translatesAutoresizingMaskIntoConstraints="NO" id="qek-L0-6qb">
+                                                            <rect key="frame" x="0.0" y="0.0" width="62.333333333333336" height="30"/>
+                                                        </imageView>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="crop_img" translatesAutoresizingMaskIntoConstraints="NO" id="FHa-3X-A2u">
                                                             <rect key="frame" x="8" y="7" width="16" height="16"/>
                                                             <constraints>
@@ -797,11 +811,15 @@
                                                             </connections>
                                                         </button>
                                                     </subviews>
-                                                    <color key="backgroundColor" systemColor="systemTealColor"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="FHa-3X-A2u" firstAttribute="centerY" secondItem="SO3-lH-yYo" secondAttribute="centerY" id="4LD-ee-JNw"/>
                                                         <constraint firstAttribute="height" constant="30" id="6Gz-42-X8O"/>
                                                         <constraint firstItem="FHa-3X-A2u" firstAttribute="leading" secondItem="SO3-lH-yYo" secondAttribute="leading" constant="8" id="DVc-l9-WH3"/>
+                                                        <constraint firstItem="qek-L0-6qb" firstAttribute="leading" secondItem="SO3-lH-yYo" secondAttribute="leading" id="YXb-4s-Fa7"/>
+                                                        <constraint firstAttribute="bottom" secondItem="qek-L0-6qb" secondAttribute="bottom" id="ZTS-7A-ofQ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="qek-L0-6qb" secondAttribute="trailing" id="bel-5q-Hto"/>
+                                                        <constraint firstItem="qek-L0-6qb" firstAttribute="top" secondItem="SO3-lH-yYo" secondAttribute="top" id="rNu-Sm-9vF"/>
                                                         <constraint firstAttribute="width" constant="62.5" id="y6q-Yb-6Pw"/>
                                                     </constraints>
                                                 </view>
@@ -850,6 +868,7 @@
     </scenes>
     <resources>
         <image name="crop_img" width="16" height="16"/>
+        <image name="edit_btn_bkg" width="64" height="30"/>
         <image name="image_picker_nornal" width="33" height="33"/>
         <image name="image_picker_selected" width="33" height="33"/>
         <image name="navi_back" width="24" height="24"/>
@@ -867,9 +886,6 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemTealColor">
-            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
