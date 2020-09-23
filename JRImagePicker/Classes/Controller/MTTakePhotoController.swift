@@ -32,9 +32,7 @@ public class MTTakePhotoController: UIViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         // Do any additional setup after loading the view.
-        refreshZoomBtn()
-        refreshFlashBtn()
-        
+    
         // Focus
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.focusTapped(_:)))
         tapRecognizer.delegate = self
@@ -61,8 +59,11 @@ public class MTTakePhotoController: UIViewController {
         photoCapture.start(with: previewViewContainer) {
             DispatchQueue.main.async { [weak self] in
                 self?.isInited = true
+                self?.refreshZoomBtn()
+                self?.refreshFlashBtn()
             }
         }
+        
     }
     
     func end() {
@@ -71,6 +72,7 @@ public class MTTakePhotoController: UIViewController {
     }
     
     @IBAction func closeAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
         imagePickerDelegate?.imagePickerControllerDidCancel()
     }
     
@@ -162,20 +164,35 @@ public class MTTakePhotoController: UIViewController {
     private func refreshZoomBtn() {
         switch photoCapture.currentAspectRatioMode {
         case .ratio1x1:
-            previewToTopConstratint.priority = .defaultLow
-            previewToNavibarConstraint.priority = .defaultHigh
-            previewHeightConstraint.constant = screenWidth
-            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
-        case .ratio3x4:
+//            previewToTopConstratint.priority = .defaultLow
+//            previewToNavibarConstraint.priority = .defaultHigh
+//            previewHeightConstraint.constant = screenWidth
+//            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
             previewToTopConstratint.priority = .defaultHigh
             previewToNavibarConstraint.priority = .defaultLow
             previewHeightConstraint.constant = screenWidth*4/3
             zoomBtn.setImage(Bundle.getImage(name: "photo_3_4"), for: .normal)
-        case .ratio9x16:
+        case .ratio3x4:
+//            previewToTopConstratint.priority = .defaultHigh
+//            previewToNavibarConstraint.priority = .defaultLow
+//            previewHeightConstraint.constant = screenWidth*4/3
+//            zoomBtn.setImage(Bundle.getImage(name: "photo_3_4"), for: .normal)
+            
             previewToTopConstratint.priority = .defaultHigh
             previewToNavibarConstraint.priority = .defaultLow
             previewHeightConstraint.constant = screenWidth*16/9
             zoomBtn.setImage(Bundle.getImage(name: "photo_9_16"), for: .normal)
+            
+        case .ratio9x16:
+//            previewToTopConstratint.priority = .defaultHigh
+//            previewToNavibarConstraint.priority = .defaultLow
+//            previewHeightConstraint.constant = screenWidth*16/9
+//            zoomBtn.setImage(Bundle.getImage(name: "photo_9_16"), for: .normal)
+            
+            previewToTopConstratint.priority = .defaultLow
+            previewToNavibarConstraint.priority = .defaultHigh
+            previewHeightConstraint.constant = screenWidth
+            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
         }
     }
     
@@ -220,5 +237,15 @@ class MTTakePhotoNavigationController: UINavigationController {
     
     override var childViewControllerForStatusBarStyle: UIViewController? {
         return topViewController
+    }
+}
+
+extension UIViewController {
+    func configNavibarColor(){
+        navigationController?.navigationBar.isTranslucent = true
+        if let barSize = navigationController?.navigationBar.bounds.size {
+            navigationController?.navigationBar.setBackgroundImage(JColorConveredImage(color: jColor(color: 0x000000), size:barSize), for: .default)
+        }
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
 }

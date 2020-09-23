@@ -87,6 +87,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        configNavibarColor()
         loadImages()
         if #available(iOS 14.0, *){
             manageBtn.isHidden = false

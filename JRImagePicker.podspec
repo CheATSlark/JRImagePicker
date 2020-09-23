@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JRImagePicker'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'JRImagePicker is a photo picker and taker set'
 
 # This description is used to generate tags and improve search results.
@@ -32,10 +32,8 @@ Pod::Spec.new do |s|
 
   s.source_files = 'JRImagePicker/Classes/**/*'
   
-   s.resource_bundles = {
-     'JRImagePicker' => ['JRImagePicker/Assets/Assets.xcassets']
-   }
-
+  s.resources = ['JRImagePicker/Assets/Assets.xcassets']
+  
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'

@@ -28,6 +28,7 @@ class MTImageResultController: UIViewController {
         // Do any additional setup after loading the view.
         configRightNavigationbar()
         configLeftNavigationBar()
+        configNavibarColor()
     }
     
     func configRightNavigationbar(){

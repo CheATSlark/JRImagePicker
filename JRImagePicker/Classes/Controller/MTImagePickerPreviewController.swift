@@ -38,6 +38,7 @@ class MTImagePickerPreviewController:UIViewController,UICollectionViewDelegateFl
         nextStepBtn.layer.masksToBounds = true
         nextStepBtn.setBackgroundImage(JColorConveredImage(color: jColor(color: 0x75C6C1), size: CGSize(width: 76.5, height: 30)), for: .normal)
         nextStepBtn.setBackgroundImage(JColorConveredImage(color: jColor(color: 0x999999), size: CGSize(width: 76.5, height: 30)), for: .disabled)
+        configNavibarColor()
         
         if let indexPath = self.collectionView.indexPathsForVisibleItems.first {
             let model = self.dataSource[indexPath.row]
