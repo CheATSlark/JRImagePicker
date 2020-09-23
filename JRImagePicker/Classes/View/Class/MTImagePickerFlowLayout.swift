@@ -38,9 +38,9 @@ class MTImagePickerFlowLayout:UICollectionViewFlowLayout {
 }
 
 
-class MTImagePickerPreviewFlowLayout:UICollectionViewFlowLayout {
+public class MTImagePickerPreviewFlowLayout:UICollectionViewFlowLayout {
     
-    override func prepare() {
+    public override func prepare() {
         self.minimumLineSpacing = 0
         self.minimumInteritemSpacing = 0
         if let collectionView = self.collectionView {
@@ -50,7 +50,7 @@ class MTImagePickerPreviewFlowLayout:UICollectionViewFlowLayout {
     }
     
     //旋转后保证还是之前的图片
-    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
+    public override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
         if let collectionView = self.collectionView as? MTImagePickerCollectionView,let prevItemSize = collectionView.prevItemSize {
             let rows = collectionView.prevOffset / prevItemSize.width
             collectionView.prevItemSize = nil

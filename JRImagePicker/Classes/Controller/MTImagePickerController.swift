@@ -85,7 +85,7 @@ public class MTImagePickerController:UINavigationController {
     }
 }
 
-protocol MTImagePickerDataSourceDelegate:NSObjectProtocol {
+public protocol MTImagePickerDataSourceDelegate:NSObjectProtocol {
     var selectedSource:[MTImagePickerModel] { get set }
     var maxCount:Int { get }
     var mediaTypes:[MTImagePickerMediaType] { get }
@@ -97,7 +97,7 @@ protocol MTImagePickerDataSourceDelegate:NSObjectProtocol {
 
 extension MTImagePickerController:MTImagePickerDataSourceDelegate {
 
-    func didFinishPicking() {
+    public func didFinishPicking() {
         if let models  = selectedSource as? [MTImagePickerPhotosModel] {
             let vc = MTImageResultController.instance
             vc.resultList = { [weak self](list) in
@@ -108,12 +108,12 @@ extension MTImagePickerController:MTImagePickerDataSourceDelegate {
         }
     }
 
-    func didCancel() {
+    public func didCancel() {
         imagePickerDelegate?.imagePickerControllerDidCancel()
         self.dismiss(animated: true, completion: nil)
     }
     
-    func showToolBarView(isShow: Bool) {
+    public func showToolBarView(isShow: Bool) {
         imagePickerDelegate?.showToolBarView(isShow: isShow)
     }
     

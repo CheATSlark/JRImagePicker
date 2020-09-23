@@ -8,11 +8,11 @@
 import UIKit
 import Photos
 
-@available(iOS 8.0, *)
+
 public class MTImagePickerPhotosModel : MTImagePickerModel {
     
     public var phasset:PHAsset!
-    init(mediaType: MTImagePickerMediaType,phasset:PHAsset) {
+    public init(mediaType: MTImagePickerMediaType,phasset:PHAsset) {
         super.init(mediaType: mediaType)
         self.phasset = phasset
     }
@@ -47,7 +47,7 @@ public class MTImagePickerPhotosModel : MTImagePickerModel {
         return img
     }
     
-    override func getPreviewImage() -> UIImage?{
+   public override func getPreviewImage() -> UIImage?{
         var img:UIImage?
         let options = PHImageRequestOptions()
         options.deliveryMode = .fastFormat
@@ -61,7 +61,7 @@ public class MTImagePickerPhotosModel : MTImagePickerModel {
         return img
     }
     
-    override func getImageAsync(complete:@escaping (UIImage?) -> Void) {
+   public override func getImageAsync(complete:@escaping (UIImage?) -> Void) {
         let options = PHImageRequestOptions()
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
@@ -124,7 +124,6 @@ public class MTImagePickerPhotosModel : MTImagePickerModel {
     
 }
 
-@available(iOS 8.0, *)
 class MTImagePickerPhotosAlbumModel:MTImagePickerAlbumModel {
     
     private var result:PHFetchResult<AnyObject>

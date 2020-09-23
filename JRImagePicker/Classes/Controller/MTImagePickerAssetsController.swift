@@ -344,11 +344,11 @@ extension MTImagePickerAssetsController: PHPhotoLibraryChangeObserver {
 
 
 
-class MTImagePickerCollectionView:UICollectionView {
+public class MTImagePickerCollectionView:UICollectionView {
     @IBOutlet weak var trailing: NSLayoutConstraint!
     @IBOutlet weak var leading: NSLayoutConstraint!
-    var prevItemSize:CGSize?
-    var prevOffset:CGFloat = 0
+   public var prevItemSize:CGSize?
+   public var prevOffset:CGFloat = 0
 }
 
 

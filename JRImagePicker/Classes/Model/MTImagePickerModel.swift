@@ -47,11 +47,11 @@ public class MTImagePickerModel:NSObject {
         fatalError("getCropImage has not been implemented")
     }
     
-    func getPreviewImage() -> UIImage?{
+   public func getPreviewImage() -> UIImage?{
         fatalError("getPreviewImage has not been implemented")
     }
     
-    func getImageAsync(complete: @escaping (UIImage?) -> Void) {
+   public func getImageAsync(complete: @escaping (UIImage?) -> Void) {
         fatalError("getImageAsync has not been implemented")
     }
     
