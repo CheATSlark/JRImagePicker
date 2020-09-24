@@ -59,7 +59,7 @@ public class MTTakePhotoController: UIViewController {
         photoCapture.start(with: previewViewContainer) {
             DispatchQueue.main.async { [weak self] in
                 self?.isInited = true
-                self?.refreshZoomBtn()
+                self?.doScaleAction()
                 self?.refreshFlashBtn()
             }
         }
@@ -88,9 +88,14 @@ public class MTTakePhotoController: UIViewController {
     }
     
     @IBAction func scaleAction(_ sender: UIButton) {
+        doScaleAction()
+    }
+    
+    private func doScaleAction(){
         refreshZoomBtn()
         photoCapture.tryToggleAspectRatio(frame: CGRect(origin: .zero, size: .init(width: screenWidth, height: previewHeightConstraint.constant)))
     }
+    
     
     @IBAction func shootAction(_ sender: Any) {
         photoCapture.shoot { [weak self](data) in

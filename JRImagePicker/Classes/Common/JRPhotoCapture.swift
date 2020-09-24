@@ -132,7 +132,10 @@ extension JRPhotoCapture {
     
     
     func updateLayer(frame: CGRect) {
-        self.videoLayer.frame = frame
+        guard let layer = videoLayer else {
+            return
+        }
+        layer.frame = frame
     }
     
     func focus(on point: CGPoint) {
