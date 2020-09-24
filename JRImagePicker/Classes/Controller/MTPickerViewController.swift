@@ -91,8 +91,8 @@ extension MTPickerViewController: UICollectionViewDelegate, UICollectionViewData
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         let vc = subViewController[indexPath.row]
-        if childViewControllers.contains(vc) == false {
-            addChildViewController(vc)
+        if children.contains(vc) == false {
+            addChild(vc)
         }
         if  cell.subviews.contains(vc.view) == false {
             vc.view.frame = cell.bounds
