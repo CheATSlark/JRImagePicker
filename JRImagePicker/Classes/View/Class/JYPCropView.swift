@@ -26,6 +26,8 @@ class JYPCropView: UIView {
     @IBOutlet weak var vLine2: UIView!
     
     @IBOutlet weak var originalBtn: UIButton!
+    
+    private var originalImage: UIImage?
     private var selectedBtn: UIButton?
     private var areaAsepct: NSLayoutConstraint?
     
@@ -50,6 +52,9 @@ class JYPCropView: UIView {
     
     
     func setConfig(image: UIImage) {
+        if originalImage == nil {
+            originalImage = image
+        }
         let ratio = image.size.width/image.size.height
         setupLayout(with: image, ratio: ratio)
         topCurtain.backgroundColor = UIColor.black.withAlphaComponent(0.75)
@@ -101,7 +106,8 @@ class JYPCropView: UIView {
     }
     
     @IBAction func chooseOriginalSize(_ sender: Any) {
-        guard let image = imageView.image else { return }
+        guard let image = originalImage else { return }
+        imageView.image = image
         let ratio = image.size.width/image.size.height
         updateAspect(multiplier: ratio)
         layoutUnderImageView(ratio: ratio)
@@ -196,35 +202,3 @@ class JYPCropView: UIView {
     }
     
 }
-
-//extension JYPCropView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        list.count
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "image", for: indexPath) as! PostedSingleImageClCell
-//        let model = list[indexPath.row]
-//        model.getImageAsync { (image) in
-//            cell.imageView.image = image
-//        }
-//        return cell
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: 65, height: 65)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        selectedIndex = indexPath
-//        let model = list[indexPath.row]
-//        model.getImageAsync { [weak self](image) in
-//            if let original = image {
-//                self?.setupLayout(with: original, ratio: 1)
-//            }
-//        }
-//       
-//    }
-//    
-//}
