@@ -92,7 +92,6 @@ class JRPostPhotoCapture: NSObject, JRPhotoCapture, AVCapturePhotoCaptureDelegat
         case .ratio9x16:
             currentAspectRatioMode = .ratio1x1
         }
-        print(currentAspectRatioMode)
         updateLayer(frame: frame)
     }
     

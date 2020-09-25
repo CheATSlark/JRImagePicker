@@ -55,9 +55,10 @@ public class MTTakePhotoController: UIViewController {
     
     
     func start() {
-   
+        photoCapture.currentAspectRatioMode = .ratio9x16
         photoCapture.start(with: previewViewContainer) {
             DispatchQueue.main.async { [weak self] in
+               
                 self?.isInited = true
                 self?.doScaleAction()
                 self?.refreshFlashBtn()

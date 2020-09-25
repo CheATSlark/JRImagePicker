@@ -32,7 +32,6 @@ class JYPCropView: UIView {
     private var areaAsepct: NSLayoutConstraint?
     
     
-    
     var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
     var list: [MTImagePickerPhotosModel]  = []
     override func awakeFromNib() {
@@ -50,7 +49,6 @@ class JYPCropView: UIView {
     }
     
     
-    
     func setConfig(image: UIImage) {
         if originalImage == nil {
             originalImage = image
@@ -66,7 +64,6 @@ class JYPCropView: UIView {
     }
     
     
-    
     private func setupLayout(with image: UIImage, ratio: CGFloat) {
         imageView.image = image
         updateAspect(multiplier: ratio)
@@ -74,10 +71,7 @@ class JYPCropView: UIView {
         layoutUnderImageView(ratio: ratio)
         
         // Fit image differently depnding on its ratio.
-        
     }
-    
-    
     
     func layoutUnderImageView(ratio: CGFloat){
         guard let image = imageView.image else {
@@ -106,11 +100,14 @@ class JYPCropView: UIView {
     }
     
     @IBAction func chooseOriginalSize(_ sender: Any) {
+        //还原原始的比例以及位置
         guard let image = originalImage else { return }
-        imageView.image = image
         let ratio = image.size.width/image.size.height
         updateAspect(multiplier: ratio)
         layoutUnderImageView(ratio: ratio)
+        imageView.frame = cropArea.frame
+        //重新赋给原图
+        imageView.image = image
     }
     
     @IBAction func chooseSizeAction(_ sender: UIButton) {
@@ -165,28 +162,6 @@ class JYPCropView: UIView {
                  UIGraphicsEndImageContext()
             }
         }
-        
-        
-        
-        
-//        if let originalImage = imageView.image?.cgImage {
-//            switch imageView.image?.imageOrientation {
-//            case .right:
-//                let  lastImage =  UIImage(cgImage: originalImage, scale: 1.0, orientation: .up)
-//                setConfig(image: lastImage)
-//            case .left:
-//                let  lastImage =  UIImage(cgImage: originalImage, scale: 1.0, orientation: .down)
-//                setConfig(image: lastImage)
-//            case .down:
-//                let  lastImage =  UIImage(cgImage: originalImage, scale: 1.0, orientation: .right)
-//                setConfig(image: lastImage)
-//            case .up:
-//                let  lastImage =  UIImage(cgImage: originalImage, scale: 1.0, orientation: .left)
-//                setConfig(image: lastImage)
-//            default:
-//                break
-//            }
-//        }
     }
     
     
@@ -194,7 +169,7 @@ class JYPCropView: UIView {
         if let aspect = areaAsepct , cropArea.constraints.contains(aspect){
             cropArea.removeConstraint(aspect)
         }
-        let c = NSLayoutConstraint(item: cropArea, attribute: .width, relatedBy: .equal, toItem: cropArea, attribute: .height, multiplier: multiplier, constant: 0)
+        let c = NSLayoutConstraint(item: cropArea!, attribute: .width, relatedBy: .equal, toItem: cropArea, attribute: .height, multiplier: multiplier, constant: 0)
         areaAsepct = c
         areaAsepct?.priority = UILayoutPriority(rawValue: 1000)
         cropArea.addConstraint(c)
