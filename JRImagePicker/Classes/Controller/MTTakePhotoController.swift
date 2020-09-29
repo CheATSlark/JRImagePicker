@@ -53,9 +53,19 @@ public class MTTakePhotoController: UIViewController {
         false
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if  photoCapture.isCaptureSessionSetup == true {
+            photoCapture.startCamera {
+                
+            }
+        }
+        imagePickerDelegate?.showToolBarView(isShow: true)
+    }
+    
     
     func start() {
-        photoCapture.currentAspectRatioMode = .ratio9x16
+        photoCapture.currentAspectRatioMode = .ratio1x1
         photoCapture.start(with: previewViewContainer) {
             DispatchQueue.main.async { [weak self] in
                
@@ -100,7 +110,8 @@ public class MTTakePhotoController: UIViewController {
     
     @IBAction func shootAction(_ sender: Any) {
         photoCapture.shoot { [weak self](data) in
-            guard let shotImage = UIImage(data: data) else { return }
+            guard var shotImage = UIImage(data: data) else { return }
+            shotImage = self?.cropImageToRation(shotImage) ?? shotImage
             self?.photoCapture.stopCamera()
             var localIdentifier: String?
             PHPhotoLibrary.shared().performChanges {
@@ -115,11 +126,80 @@ public class MTTakePhotoController: UIViewController {
                     }
                     vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: assetResult.firstObject!)]
                     self?.navigationController?.pushViewController(vc, animated: true)
+                    self?.imagePickerDelegate?.showToolBarView(isShow: false)
                 }
             }
             
         }
     }
+    
+    func cropImageToRation(_ image: UIImage) -> UIImage {
+        let orientation: UIDeviceOrientation = JRDeviceOrientationHelper.shared.currentDeviceOrientation
+        /// 初始照片尺寸
+        let imageWidth = image.size.width
+        let imageHeight = image.size.height
+        
+        /// 横拍照片尺寸
+        var photoHeight = imageHeight
+        var photoWidth = imageWidth
+        switch orientation {
+        case .landscapeLeft, .landscapeRight:
+            // Swap width and height if orientation is landscape
+            photoWidth = image.size.height
+            photoHeight = image.size.width
+        default:
+            break
+        }
+        var ratio: CGFloat = 1.0
+        switch photoCapture.currentAspectRatioMode {
+        case .ratio1x1:
+            ratio = 1
+        case .ratio3x4:
+            ratio = 3/4
+//        case .ratio9x16:
+//            ratio = 9/16
+        }
+        
+        if ratio > (photoWidth / photoHeight) {
+            switch photoCapture.currentAspectRatioMode {
+            case .ratio1x1:
+                photoHeight = photoWidth
+            case .ratio3x4:
+                photoHeight = photoWidth*4/3
+//            case .ratio9x16:
+//                photoHeight = photoWidth*16/9
+            }
+        }else {
+            switch photoCapture.currentAspectRatioMode {
+            case .ratio1x1:
+                photoWidth = photoHeight
+            case .ratio3x4:
+                photoWidth = photoHeight*3/4
+//            case .ratio9x16:
+//                photoWidth = photoHeight*9/16
+            }
+        }
+    
+        var original: CGPoint = .zero
+        if imageWidth > imageHeight {
+            original = .init(x: (imageWidth-imageHeight)/2, y: 0)
+        }else {
+            original = .init(x: 0, y: (imageHeight-imageWidth)/2)
+        }
+
+       // 3: 4
+        //  home 右。向左 偏移
+        // home 左， 无偏移。
+        // 左下角
+        // 9: 16
+        // home右， 向上偏移
+        // home 左 向上偏移
+        
+        let rect = CGRect(x: original.y, y:  original.x, width: photoHeight, height: photoWidth)
+        let imageRef = image.cgImage?.cropping(to: rect)
+        return UIImage(cgImage: imageRef!, scale: 1.0, orientation: image.imageOrientation)
+    }
+    
     
     @objc
     func focusTapped(_ recognizer: UITapGestureRecognizer) {
@@ -189,16 +269,16 @@ public class MTTakePhotoController: UIViewController {
             previewHeightConstraint.constant = screenWidth*16/9
             zoomBtn.setImage(Bundle.getImage(name: "photo_9_16"), for: .normal)
             
-        case .ratio9x16:
+//        case .ratio9x16:
 //            previewToTopConstratint.priority = .defaultHigh
 //            previewToNavibarConstraint.priority = .defaultLow
 //            previewHeightConstraint.constant = screenWidth*16/9
 //            zoomBtn.setImage(Bundle.getImage(name: "photo_9_16"), for: .normal)
             
-            previewToTopConstratint.priority = .defaultLow
-            previewToNavibarConstraint.priority = .defaultHigh
-            previewHeightConstraint.constant = screenWidth
-            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
+//            previewToTopConstratint.priority = .defaultLow
+//            previewToNavibarConstraint.priority = .defaultHigh
+//            previewHeightConstraint.constant = screenWidth
+//            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
         }
     }
     

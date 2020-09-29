@@ -34,7 +34,6 @@
 		F44FE6E72510BA78006A846B /* JYPImagePickerViews.xib in Resources */ = {isa = PBXBuildFile; fileRef = F44FE6CC2510BA78006A846B /* JYPImagePickerViews.xib */; };
 		F44FE6E82510BA78006A846B /* ImagePickerPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6CD2510BA78006A846B /* ImagePickerPreviewCell.swift */; };
 		F44FE6E92510BA78006A846B /* ImageAlbumsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6CE2510BA78006A846B /* ImageAlbumsView.swift */; };
-		F44FE6EA2510BA78006A846B /* MTImagePicker.strings in Resources */ = {isa = PBXBuildFile; fileRef = F44FE6D02510BA78006A846B /* MTImagePicker.strings */; };
 		F44FE6EB2510BA78006A846B /* MTImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F44FE6D32510BA78006A846B /* MTImagePicker.storyboard */; };
 		F44FE6EC2510BA78006A846B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6D62510BA78006A846B /* Extensions.swift */; };
 		F44FE6ED2510BA78006A846B /* MTImagePickerPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6D82510BA78006A846B /* MTImagePickerPreviewController.swift */; };
@@ -43,6 +42,7 @@
 		F44FE6F72510C49E006A846B /* MTImageCropController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6F62510C49E006A846B /* MTImageCropController.swift */; };
 		F44FE6F92511E6DD006A846B /* MTPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6F82511E6DD006A846B /* MTPickerViewController.swift */; };
 		F44FE6FB2511FA43006A846B /* MTTakePhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FE6FA2511FA43006A846B /* MTTakePhotoController.swift */; };
+		F4C140482522012600BD7F97 /* JRDeviceOrientationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C140472522012600BD7F97 /* JRDeviceOrientationHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,8 +113,6 @@
 		F44FE6CC2510BA78006A846B /* JYPImagePickerViews.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JYPImagePickerViews.xib; sourceTree = "<group>"; };
 		F44FE6CD2510BA78006A846B /* ImagePickerPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerPreviewCell.swift; sourceTree = "<group>"; };
 		F44FE6CE2510BA78006A846B /* ImageAlbumsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAlbumsView.swift; sourceTree = "<group>"; };
-		F44FE6D12510BA78006A846B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MTImagePicker.strings"; sourceTree = "<group>"; };
-		F44FE6D22510BA78006A846B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MTImagePicker.strings; sourceTree = "<group>"; };
 		F44FE6D42510BA78006A846B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MTImagePicker.storyboard; sourceTree = "<group>"; };
 		F44FE6D62510BA78006A846B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F44FE6D82510BA78006A846B /* MTImagePickerPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImagePickerPreviewController.swift; sourceTree = "<group>"; };
@@ -123,6 +121,7 @@
 		F44FE6F62510C49E006A846B /* MTImageCropController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTImageCropController.swift; sourceTree = "<group>"; };
 		F44FE6F82511E6DD006A846B /* MTPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTPickerViewController.swift; sourceTree = "<group>"; };
 		F44FE6FA2511FA43006A846B /* MTTakePhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTTakePhotoController.swift; sourceTree = "<group>"; };
+		F4C140472522012600BD7F97 /* JRDeviceOrientationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JRDeviceOrientationHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,7 +306,6 @@
 		F44FE6CF2510BA78006A846B /* IB */ = {
 			isa = PBXGroup;
 			children = (
-				F44FE6D02510BA78006A846B /* MTImagePicker.strings */,
 				F44FE6D32510BA78006A846B /* MTImagePicker.storyboard */,
 			);
 			path = IB;
@@ -316,6 +314,7 @@
 		F44FE6D52510BA78006A846B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F4C140472522012600BD7F97 /* JRDeviceOrientationHelper.swift */,
 				F44FE6D62510BA78006A846B /* Extensions.swift */,
 				F40DC6142514573B008767F3 /* JRPhotoCapture.swift */,
 				F40DC619251497F2008767F3 /* JRPostPhotoCapture.swift */,
@@ -486,7 +485,6 @@
 				F44FE6E32510BA78006A846B /* ImageAlbumTbCell.xib in Resources */,
 				F44FE6E72510BA78006A846B /* JYPImagePickerViews.xib in Resources */,
 				F44FE6BE2510BA13006A846B /* Assets.xcassets in Resources */,
-				F44FE6EA2510BA78006A846B /* MTImagePicker.strings in Resources */,
 				F44FE6EB2510BA78006A846B /* MTImagePicker.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -507,6 +505,7 @@
 			files = (
 				F44FE6ED2510BA78006A846B /* MTImagePickerPreviewController.swift in Sources */,
 				F44FE6E52510BA78006A846B /* MTImagePickerFlowLayout.swift in Sources */,
+				F4C140482522012600BD7F97 /* JRDeviceOrientationHelper.swift in Sources */,
 				F44FE6F92511E6DD006A846B /* MTPickerViewController.swift in Sources */,
 				F44FE6EF2510BA78006A846B /* MTImagePickerAssetsController.swift in Sources */,
 				B5B24F0C02CBE13C27500F6E8020DAE4 /* JRImagePicker-dummy.m in Sources */,
@@ -564,15 +563,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F44FE6D02510BA78006A846B /* MTImagePicker.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F44FE6D12510BA78006A846B /* zh-Hans */,
-				F44FE6D22510BA78006A846B /* en */,
-			);
-			name = MTImagePicker.strings;
-			sourceTree = "<group>";
-		};
 		F44FE6D32510BA78006A846B /* MTImagePicker.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -129,7 +129,7 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="16" maxY="0.0"/>
-                                                <state key="normal" title="Done">
+                                                <state key="normal" title="完成">
                                                     <color key="titleColor" red="0.94994920490000001" green="0.94997149709999995" blue="0.94995945690000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <state key="disabled">
@@ -145,13 +145,13 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v9l-Hz-hPi">
-                                                <rect key="frame" x="0.0" y="0.0" width="81" height="49"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="80" height="49"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="cc4-7w-Nqk"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="8" maxY="0.0"/>
-                                                <state key="normal" title="Preview">
+                                                <state key="normal" title="预览">
                                                     <color key="titleColor" name="mainColor"/>
                                                 </state>
                                                 <state key="disabled">

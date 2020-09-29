@@ -67,7 +67,7 @@ public class MTPickerViewController: UIViewController {
             self?.indicateView.center = CGPoint(x: sender.center.x, y: self?.indicateView.center.y ?? 0)
         }
         
-        contentCollectionView.scrollToItem(at: IndexPath(row: toolBtns.index(of: sender) ?? 0, section: 0), at: .centeredHorizontally, animated: true)
+        contentCollectionView.scrollToItem(at: IndexPath(row: toolBtns.firstIndex(of: sender) ?? 0, section: 0), at: .centeredHorizontally, animated: true)
         switch sender {
         case takePhotoBtn:
             if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {

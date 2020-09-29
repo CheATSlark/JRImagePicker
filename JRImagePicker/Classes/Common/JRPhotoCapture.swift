@@ -223,5 +223,5 @@ enum JRFlashMode {
 enum JRAspectRatioMode {
     case ratio1x1
     case ratio3x4
-    case ratio9x16
+//    case ratio9x16
 }
