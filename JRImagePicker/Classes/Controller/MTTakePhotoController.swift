@@ -27,9 +27,7 @@ public class MTTakePhotoController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        
         // Do any additional setup after loading the view.
     
         // Focus
@@ -53,6 +51,9 @@ public class MTTakePhotoController: UIViewController {
     }
     
     public override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
         super.viewWillAppear(animated)
         if  photoCapture.isCaptureSessionSetup == true {
             photoCapture.startCamera {

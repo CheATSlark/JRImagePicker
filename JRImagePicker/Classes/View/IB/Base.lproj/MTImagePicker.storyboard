@@ -666,7 +666,6 @@
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hh7-iT-OGi">
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <state key="normal" image="photo_9_16"/>
                                     <connections>
                                         <action selector="scaleAction:" destination="FWx-dA-jdx" eventType="touchUpInside" id="4Ay-uV-6d2"/>
                                     </connections>
@@ -857,7 +856,6 @@
         <image name="image_picker_nornal" width="33" height="33"/>
         <image name="image_picker_selected" width="33" height="33"/>
         <image name="navi_back" width="24" height="24"/>
-        <image name="photo_9_16" width="24" height="24"/>
         <image name="photo_flash_off" width="24" height="24"/>
         <image name="photo_flash_on" width="24" height="24"/>
         <image name="photo_flip" width="24" height="24"/>
