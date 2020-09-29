@@ -330,8 +330,9 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     
     @IBAction func addResource(_ sender: Any) {
         if #available(iOS 14.0, *) {
-            
+        
             PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self)
+            self.presentingViewController?.view.backgroundColor = .black
         }
     }
 }

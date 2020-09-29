@@ -16,8 +16,7 @@ public class MTTakePhotoController: UIViewController {
     @IBOutlet weak var zoomBtn: UIButton!
     @IBOutlet weak var flipBtn: UIButton!
     @IBOutlet weak var previewHeightConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var previewToTopConstratint: NSLayoutConstraint!
-//    @IBOutlet weak var previewToNavibarConstraint: NSLayoutConstraint!
+    @IBOutlet weak var previewToTopConstratint: NSLayoutConstraint!
     
     public weak var imagePickerDelegate:MTImagePickerControllerDelegate?
     
@@ -44,10 +43,10 @@ public class MTTakePhotoController: UIViewController {
         previewViewContainer.addGestureRecognizer(pinchRecongizer)
     }
     
-//    public override func viewSafeAreaInsetsDidChange() {
-//        super.viewSafeAreaInsetsDidChange()
-//        previewToTopConstratint.constant = view.safeAreaInsets.top - (navigationController?.navigationBar.frame.size.height ?? 0)
-//    }
+    public override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        previewToTopConstratint.constant = view.safeAreaInsets.top - (navigationController?.navigationBar.frame.size.height ?? 0)
+    }
         
     public override var prefersStatusBarHidden: Bool {
         false
@@ -65,15 +64,19 @@ public class MTTakePhotoController: UIViewController {
     
     
     func start() {
-        photoCapture.currentAspectRatioMode = .ratio1x1
-        photoCapture.start(with: previewViewContainer) {
-            DispatchQueue.main.async { [weak self] in
-               
-                self?.isInited = true
-                self?.doScaleAction()
-                self?.refreshFlashBtn()
+        AVCaptureDevice.requestAccess(for: .video) { [weak self](isTrust) in
+            if isTrust == true {
+                self?.photoCapture.currentAspectRatioMode = .ratio1x1
+                self?.photoCapture.start(with: (self?.previewViewContainer)!) {
+                    DispatchQueue.main.async {
+                        self?.isInited = true
+                        self?.doScaleAction()
+                        self?.refreshFlashBtn()
+                    }
+                }
             }
         }
+       
         
     }
     
@@ -247,7 +250,6 @@ public class MTTakePhotoController: UIViewController {
     private func refreshZoomBtn() {
         switch photoCapture.currentAspectRatioMode {
         case .ratio1x1:
-
             previewHeightConstraint.constant = screenWidth*4/3
             zoomBtn.setImage(Bundle.getImage(name: "photo_3_4"), for: .normal)
         case .ratio3x4:

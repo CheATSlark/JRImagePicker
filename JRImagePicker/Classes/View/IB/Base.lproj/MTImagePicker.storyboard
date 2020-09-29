@@ -614,7 +614,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nD-58-dtQ">
-                                <rect key="frame" x="0.0" y="88" width="375" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                                 <color key="backgroundColor" name="bkgColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="dDa-qh-J1I"/>
@@ -626,7 +626,7 @@
                         <constraints>
                             <constraint firstItem="6nD-58-dtQ" firstAttribute="leading" secondItem="3Uj-Ef-eGP" secondAttribute="leading" id="7XZ-6L-dv4"/>
                             <constraint firstItem="3Uj-Ef-eGP" firstAttribute="trailing" secondItem="6nD-58-dtQ" secondAttribute="trailing" id="KuV-WX-7KE"/>
-                            <constraint firstItem="6nD-58-dtQ" firstAttribute="top" secondItem="3Uj-Ef-eGP" secondAttribute="top" id="a3G-wZ-7MY"/>
+                            <constraint firstItem="6nD-58-dtQ" firstAttribute="top" secondItem="jOC-pg-DeN" secondAttribute="top" id="UQb-mY-QO8"/>
                             <constraint firstItem="SlQ-Mn-Lie" firstAttribute="centerX" secondItem="3Uj-Ef-eGP" secondAttribute="centerX" id="sPx-cy-iME"/>
                             <constraint firstItem="3Uj-Ef-eGP" firstAttribute="bottom" secondItem="SlQ-Mn-Lie" secondAttribute="bottom" constant="80" id="t03-DO-8ku"/>
                         </constraints>
@@ -713,6 +713,7 @@
                         <outlet property="flashBtn" destination="fQU-Fj-9QP" id="IbW-gI-pAa"/>
                         <outlet property="flipBtn" destination="NFg-8c-Iev" id="wds-aR-Yzj"/>
                         <outlet property="previewHeightConstraint" destination="dDa-qh-J1I" id="8It-71-mOY"/>
+                        <outlet property="previewToTopConstratint" destination="UQb-mY-QO8" id="2Xo-qu-F9h"/>
                         <outlet property="previewViewContainer" destination="6nD-58-dtQ" id="yxO-KI-Efq"/>
                         <outlet property="zoomBtn" destination="Hh7-iT-OGi" id="gfR-3i-QSl"/>
                     </connections>
