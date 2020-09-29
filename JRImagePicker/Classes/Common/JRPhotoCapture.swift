@@ -97,8 +97,8 @@ extension JRPhotoCapture {
                     self?.session.stopRunning()
                 case .authorized:
                     self?.session.startRunning()
-                    completion()
                     self?.tryToSetupPreview()
+                    completion()
                 @unknown default:
                     fatalError()
                 }

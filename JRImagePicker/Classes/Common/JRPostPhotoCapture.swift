@@ -87,8 +87,10 @@ class JRPostPhotoCapture: NSObject, JRPhotoCapture, AVCapturePhotoCaptureDelegat
         switch currentAspectRatioMode {
         case .ratio1x1:
             currentAspectRatioMode = .ratio3x4
+            print("size === \(videoLayer.preferredFrameSize())")
         case .ratio3x4:
             currentAspectRatioMode = .ratio1x1
+            print("size === \(videoLayer.preferredFrameSize())")
 //            currentAspectRatioMode = .ratio9x16
 //        case .ratio9x16:
 //            currentAspectRatioMode = .ratio1x1

@@ -16,8 +16,8 @@ public class MTTakePhotoController: UIViewController {
     @IBOutlet weak var zoomBtn: UIButton!
     @IBOutlet weak var flipBtn: UIButton!
     @IBOutlet weak var previewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var previewToTopConstratint: NSLayoutConstraint!
-    @IBOutlet weak var previewToNavibarConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var previewToTopConstratint: NSLayoutConstraint!
+//    @IBOutlet weak var previewToNavibarConstraint: NSLayoutConstraint!
     
     public weak var imagePickerDelegate:MTImagePickerControllerDelegate?
     
@@ -44,10 +44,10 @@ public class MTTakePhotoController: UIViewController {
         previewViewContainer.addGestureRecognizer(pinchRecongizer)
     }
     
-    public override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-        previewToTopConstratint.constant = view.safeAreaInsets.top - (navigationController?.navigationBar.frame.size.height ?? 0)
-    }
+//    public override func viewSafeAreaInsetsDidChange() {
+//        super.viewSafeAreaInsetsDidChange()
+//        previewToTopConstratint.constant = view.safeAreaInsets.top - (navigationController?.navigationBar.frame.size.height ?? 0)
+//    }
         
     public override var prefersStatusBarHidden: Bool {
         false
@@ -156,8 +156,10 @@ public class MTTakePhotoController: UIViewController {
             ratio = 1
         case .ratio3x4:
             ratio = 3/4
-//        case .ratio9x16:
-//            ratio = 9/16
+        }
+        
+        if imageWidth/imageHeight == ratio {
+            return image
         }
         
         if ratio > (photoWidth / photoHeight) {
@@ -166,8 +168,6 @@ public class MTTakePhotoController: UIViewController {
                 photoHeight = photoWidth
             case .ratio3x4:
                 photoHeight = photoWidth*4/3
-//            case .ratio9x16:
-//                photoHeight = photoWidth*16/9
             }
         }else {
             switch photoCapture.currentAspectRatioMode {
@@ -175,29 +175,26 @@ public class MTTakePhotoController: UIViewController {
                 photoWidth = photoHeight
             case .ratio3x4:
                 photoWidth = photoHeight*3/4
-//            case .ratio9x16:
-//                photoWidth = photoHeight*9/16
             }
         }
     
+       
         var original: CGPoint = .zero
-        if imageWidth > imageHeight {
-            original = .init(x: (imageWidth-imageHeight)/2, y: 0)
-        }else {
+        switch photoCapture.currentAspectRatioMode {
+        case .ratio1x1:
             original = .init(x: 0, y: (imageHeight-imageWidth)/2)
+        case .ratio3x4:
+            original = .init(x: (imageWidth-imageHeight)/2, y: 0)
         }
-
-       // 3: 4
-        //  home 右。向左 偏移
-        // home 左， 无偏移。
-        // 左下角
-        // 9: 16
-        // home右， 向上偏移
-        // home 左 向上偏移
-        
+        /*
+         照片的 imageOrientation 不会随着拍照设备的位置 而改变。 设备的也是
+         */
+        /*
+         竖直，是从 右上角 开始进行裁剪的， 坐标点 随着翻转改变。
+         */
         let rect = CGRect(x: original.y, y:  original.x, width: photoHeight, height: photoWidth)
         let imageRef = image.cgImage?.cropping(to: rect)
-        return UIImage(cgImage: imageRef!, scale: 1.0, orientation: image.imageOrientation)
+        return UIImage(cgImage: imageRef!, scale: UIScreen.main.bounds.size.width/photoWidth, orientation: image.imageOrientation)
     }
     
     
@@ -250,35 +247,13 @@ public class MTTakePhotoController: UIViewController {
     private func refreshZoomBtn() {
         switch photoCapture.currentAspectRatioMode {
         case .ratio1x1:
-//            previewToTopConstratint.priority = .defaultLow
-//            previewToNavibarConstraint.priority = .defaultHigh
-//            previewHeightConstraint.constant = screenWidth
-//            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
-            previewToTopConstratint.priority = .defaultHigh
-            previewToNavibarConstraint.priority = .defaultLow
+
             previewHeightConstraint.constant = screenWidth*4/3
             zoomBtn.setImage(Bundle.getImage(name: "photo_3_4"), for: .normal)
         case .ratio3x4:
-//            previewToTopConstratint.priority = .defaultHigh
-//            previewToNavibarConstraint.priority = .defaultLow
-//            previewHeightConstraint.constant = screenWidth*4/3
-//            zoomBtn.setImage(Bundle.getImage(name: "photo_3_4"), for: .normal)
+            previewHeightConstraint.constant = screenWidth
+            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
             
-            previewToTopConstratint.priority = .defaultHigh
-            previewToNavibarConstraint.priority = .defaultLow
-            previewHeightConstraint.constant = screenWidth*16/9
-            zoomBtn.setImage(Bundle.getImage(name: "photo_9_16"), for: .normal)
-            
-//        case .ratio9x16:
-//            previewToTopConstratint.priority = .defaultHigh
-//            previewToNavibarConstraint.priority = .defaultLow
-//            previewHeightConstraint.constant = screenWidth*16/9
-//            zoomBtn.setImage(Bundle.getImage(name: "photo_9_16"), for: .normal)
-            
-//            previewToTopConstratint.priority = .defaultLow
-//            previewToNavibarConstraint.priority = .defaultHigh
-//            previewHeightConstraint.constant = screenWidth
-//            zoomBtn.setImage(Bundle.getImage(name: "photo_1_1"), for: .normal)
         }
     }
     

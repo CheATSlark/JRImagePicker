@@ -90,7 +90,11 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         configNavibarColor()
         loadImages()
         if #available(iOS 14.0, *){
-            manageBtn.isHidden = false
+            if PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited {
+                manageBtn.isHidden = false
+            }else{
+                manageBtn.isHidden = true
+            }
         }else{
             manageBtn.isHidden = true
         }
@@ -326,6 +330,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     
     @IBAction func addResource(_ sender: Any) {
         if #available(iOS 14.0, *) {
+            
             PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self)
         }
     }
