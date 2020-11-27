@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		008CEAFD2570A4BA000F8439 /* LimitImageLeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008CEAFB2570A4B9000F8439 /* LimitImageLeadView.swift */; };
+		008CEAFE2570A4BA000F8439 /* LimitImageLeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 008CEAFC2570A4B9000F8439 /* LimitImageLeadView.xib */; };
 		31E4489A51B96F4DC0450707488DF04C /* Pods-JRImagePicker_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B26EF08E13CCB0C45B9570EC9724BE58 /* Pods-JRImagePicker_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3CD06335E2D14227A6FB997335447CB2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		5A068FB9144027E83124B4455CE5FBFE /* JRImagePicker-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = EB37A6F773AFC4649CBFA435B8C2DB37 /* JRImagePicker-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,6 +65,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		008CEAFB2570A4B9000F8439 /* LimitImageLeadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitImageLeadView.swift; sourceTree = "<group>"; };
+		008CEAFC2570A4B9000F8439 /* LimitImageLeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LimitImageLeadView.xib; sourceTree = "<group>"; };
 		1B7A19DECED7D46876D84448DDC55F93 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		1C043211708D328B30AC745D24A8A512 /* Pods-JRImagePicker_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JRImagePicker_Example-umbrella.h"; sourceTree = "<group>"; };
 		24059042A955DD3D90C94E6DA9384FEA /* Pods-JRImagePicker_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-JRImagePicker_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -288,17 +292,19 @@
 		F44FE6C42510BA78006A846B /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				F44FE6CE2510BA78006A846B /* ImageAlbumsView.swift */,
 				F44FE6C52510BA78006A846B /* ImageAlbumsView.xib */,
-				F44FE6C62510BA78006A846B /* VideoPickerPreviewCell.swift */,
 				F44FE6C72510BA78006A846B /* ImageAlbumTbCell.swift */,
 				F44FE6C82510BA78006A846B /* ImageAlbumTbCell.xib */,
-				F44FE6CA2510BA78006A846B /* MTImagePickerFlowLayout.swift */,
-				F44FE6CB2510BA78006A846B /* MTImagePickerCell.swift */,
 				F44FE6CD2510BA78006A846B /* ImagePickerPreviewCell.swift */,
-				F44FE6CE2510BA78006A846B /* ImageAlbumsView.swift */,
 				F4443E652518D5AD005B535B /* ImageResultClCell.swift */,
+				008CEAFB2570A4B9000F8439 /* LimitImageLeadView.swift */,
+				008CEAFC2570A4B9000F8439 /* LimitImageLeadView.xib */,
 				F44FE6C92510BA78006A846B /* JYPCropView.swift */,
 				F44FE6CC2510BA78006A846B /* JYPImagePickerViews.xib */,
+				F44FE6CB2510BA78006A846B /* MTImagePickerCell.swift */,
+				F44FE6CA2510BA78006A846B /* MTImagePickerFlowLayout.swift */,
+				F44FE6C62510BA78006A846B /* VideoPickerPreviewCell.swift */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -314,8 +320,8 @@
 		F44FE6D52510BA78006A846B /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				F4C140472522012600BD7F97 /* JRDeviceOrientationHelper.swift */,
 				F44FE6D62510BA78006A846B /* Extensions.swift */,
+				F4C140472522012600BD7F97 /* JRDeviceOrientationHelper.swift */,
 				F40DC6142514573B008767F3 /* JRPhotoCapture.swift */,
 				F40DC619251497F2008767F3 /* JRPostPhotoCapture.swift */,
 			);
@@ -326,13 +332,13 @@
 		F44FE6D72510BA78006A846B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				F44FE6D82510BA78006A846B /* MTImagePickerPreviewController.swift */,
+				F44FE6F62510C49E006A846B /* MTImageCropController.swift */,
 				F44FE6DA2510BA78006A846B /* MTImagePickerAssetsController.swift */,
 				F44FE6DB2510BA78006A846B /* MTImagePickerController.swift */,
-				F44FE6F62510C49E006A846B /* MTImageCropController.swift */,
+				F44FE6D82510BA78006A846B /* MTImagePickerPreviewController.swift */,
+				F4443E602518D46F005B535B /* MTImageResultController.swift */,
 				F44FE6F82511E6DD006A846B /* MTPickerViewController.swift */,
 				F44FE6FA2511FA43006A846B /* MTTakePhotoController.swift */,
-				F4443E602518D46F005B535B /* MTImageResultController.swift */,
 			);
 			name = Controller;
 			path = JRImagePicker/Classes/Controller;
@@ -481,6 +487,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				008CEAFE2570A4BA000F8439 /* LimitImageLeadView.xib in Resources */,
 				F44FE6E02510BA78006A846B /* ImageAlbumsView.xib in Resources */,
 				F44FE6E32510BA78006A846B /* ImageAlbumTbCell.xib in Resources */,
 				F44FE6E72510BA78006A846B /* JYPImagePickerViews.xib in Resources */,
@@ -517,6 +524,7 @@
 				F44FE6E82510BA78006A846B /* ImagePickerPreviewCell.swift in Sources */,
 				F40DC6152514573B008767F3 /* JRPhotoCapture.swift in Sources */,
 				F44FE6E62510BA78006A846B /* MTImagePickerCell.swift in Sources */,
+				008CEAFD2570A4BA000F8439 /* LimitImageLeadView.swift in Sources */,
 				F44FE6E42510BA78006A846B /* JYPCropView.swift in Sources */,
 				F44FE6EC2510BA78006A846B /* Extensions.swift in Sources */,
 				F44FE6E92510BA78006A846B /* ImageAlbumsView.swift in Sources */,

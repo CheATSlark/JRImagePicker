@@ -34,12 +34,12 @@ class MTImagePickerPreviewController:UIViewController,UICollectionViewDelegateFl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nextStepBtn.layer.cornerRadius = 3
+        nextStepBtn.layer.cornerRadius = 2
         nextStepBtn.layer.masksToBounds = true
-        nextStepBtn.setBackgroundImage(JColorConveredImage(color: jColor(color: 0x75C6C1), size: CGSize(width: 76.5, height: 30)), for: .normal)
-        nextStepBtn.setBackgroundImage(JColorConveredImage(color: jColor(color: 0x999999), size: CGSize(width: 76.5, height: 30)), for: .disabled)
-        configNavibarColor()
-        
+        nextStepBtn.setBackgroundImage(JColorConveredImage(color: jColor(color: 0xFF4C95), size: CGSize(width: 76, height: 28)), for: .normal)
+        nextStepBtn.setBackgroundImage(JColorConveredImage(color: jColor(color: 0xDDDDDD), size: CGSize(width: 76, height: 28)), for: .disabled)
+        configNavibarColor(jColor(color: 0x000000))
+
         if let indexPath = self.collectionView.indexPathsForVisibleItems.first {
             let model = self.dataSource[indexPath.row]
             if let idex = delegate.selectedSource.firstIndex(of: model) {
@@ -59,6 +59,7 @@ class MTImagePickerPreviewController:UIViewController,UICollectionViewDelegateFl
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = true
         self.scrollViewDidEndDecelerating(self.collectionView)
+        self.delegate.showToolBarView(isShow: false)
     }
     
     override var prefersStatusBarHidden: Bool {

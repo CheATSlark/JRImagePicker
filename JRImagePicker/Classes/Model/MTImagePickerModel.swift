@@ -91,3 +91,24 @@ class MTImagePickerAlbumModel:NSObject {
         fatalError("getAlbimType has not been implemented")
     }
 }
+
+extension String  {
+    
+    var albumCnName: String {
+        if self.isEmpty {return ""}
+        switch self {
+        case "Recently Deleted":
+            return "最近删除"
+        case "Recents":
+            return "最近项目"
+        case "Recently Added":
+            return "最近添加"
+        case "Live Photos":
+            return "实况照片"
+        case "Screenshots":
+            return "截屏"
+        default:
+            return self
+        }
+    }
+}

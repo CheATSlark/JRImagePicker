@@ -104,6 +104,7 @@ extension MTImagePickerController:MTImagePickerDataSourceDelegate {
                 self?.imagePickerDelegate?.imagePickerController(models: list)
             }
             vc.list = models
+            vc.delegate = self.imagePickerDelegate
             self.pushViewController(vc, animated: true)
         }
     }

@@ -9,19 +9,19 @@
 import UIKit
 
 class MTImagePickerFlowLayout:UICollectionViewFlowLayout {
-    var space:CGFloat!
+    var space:CGFloat = 0
     var itemOfRow:Int = 3
     override func prepare() {
-        self.minimumLineSpacing = 0
-        self.minimumInteritemSpacing = 0
+        self.minimumLineSpacing = 3
+        self.minimumInteritemSpacing = 3
         let bounds = UIScreen.main.compatibleBounds
-        self.space = bounds.width  / CGFloat(itemOfRow) / 20.0
+//        self.space = bounds.width  / CGFloat(itemOfRow) / 20.0
         // - 1 避免精度丢失导致一行放不下4个
-        let width = ( bounds.width - self.space - 1 ) / CGFloat(itemOfRow)
+        let width = (bounds.width - 2*3) / CGFloat(itemOfRow)
         self.itemSize = CGSize(width: width, height: width)
         if let collectionView = (self.collectionView as? MTImagePickerCollectionView) {
-            collectionView.leading.constant = self.space / 2.0
-            collectionView.trailing.constant = self.space / 2.0
+//            collectionView.leading.constant = self.space / 2.0
+//            collectionView.trailing.constant = self.space / 2.0
             collectionView.contentOffset = self.targetContentOffset(forProposedContentOffset: collectionView.contentOffset)
         }
     }
