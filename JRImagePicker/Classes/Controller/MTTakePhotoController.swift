@@ -129,6 +129,7 @@ public class MTTakePhotoController: UIViewController {
                         self?.imagePickerDelegate?.imagePickerController(models: list)
                     }
                     vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: assetResult.firstObject!)]
+                    vc.delegate = self?.imagePickerDelegate
                     self?.navigationController?.pushViewController(vc, animated: true)
                     self?.imagePickerDelegate?.showToolBarView(isShow: false)
                 }
@@ -305,10 +306,10 @@ class MTTakePhotoNavigationController: UINavigationController {
 }
 
 extension UIViewController {
-    func configNavibarColor(){
+    func configNavibarColor(_ color: UIColor){
         navigationController?.navigationBar.isTranslucent = true
         if let barSize = navigationController?.navigationBar.bounds.size {
-            navigationController?.navigationBar.setBackgroundImage(JColorConveredImage(color: jColor(color: 0x000000), size:barSize), for: .default)
+            navigationController?.navigationBar.setBackgroundImage(JColorConveredImage(color: color, size:barSize), for: .default)
         }
         navigationController?.navigationBar.shadowImage = UIImage()
     }

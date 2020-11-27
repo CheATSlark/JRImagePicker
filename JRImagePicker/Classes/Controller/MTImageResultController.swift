@@ -9,6 +9,8 @@ import UIKit
 
 class MTImageResultController: UIViewController {
     
+    weak var delegate:MTImagePickerControllerDelegate!
+
     var list: [MTImagePickerPhotosModel] = []
     var resultList: (([MTImagePickerPhotosModel])->Void)?
     
@@ -28,7 +30,12 @@ class MTImageResultController: UIViewController {
         // Do any additional setup after loading the view.
         configRightNavigationbar()
         configLeftNavigationBar()
-        configNavibarColor()
+        configNavibarColor(jColor(color: 0x222222))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate.showToolBarView(isShow: false)
     }
     
     func configRightNavigationbar(){

@@ -60,6 +60,7 @@ public class MTPickerViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         subViewController = [photoAssetVc, takePhotoVc]
+        
     }
 
     @IBAction func selectIndex(_ sender: UIButton) {

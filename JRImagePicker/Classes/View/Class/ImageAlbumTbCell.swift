@@ -16,8 +16,9 @@ class ImageAlbumTbCell: UITableViewCell {
     
     func setup(model:MTImagePickerAlbumModel) {
         self.lbAlbumCount.text = "(\(model.getAlbumCount()))"
-        self.lbAlbumName.text = model.getAlbumName()
+        self.lbAlbumName.text = (model.getAlbumName() ?? "").albumCnName
         self.posterImageView.image = model.getAlbumImage(size: self.posterImageView.frame.size)
+      
     }
     
     override func awakeFromNib() {

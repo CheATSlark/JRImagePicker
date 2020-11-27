@@ -24,12 +24,12 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         }
     }
     @IBOutlet weak var collectionView: MTImagePickerCollectionView!
-    @IBOutlet weak var lbSelected: UILabel!
+//    @IBOutlet weak var lbSelected: UILabel!
     @IBOutlet weak var btnPreview: UIButton!
     @IBOutlet weak var imageCollection: MTImagePickerCollectionView!
     @IBOutlet weak var toolbarView: UIView!
     @IBOutlet weak var manageBtn: UIButton!
-    
+    @IBOutlet weak var nextStepBtn: UIButton!
     private var dataSource = [MTImagePickerModel]()
     private var initialScrollDone:Bool = false
     private var titleBtn = UIButton(type: .custom)
@@ -49,6 +49,15 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         return albums
     }()
     
+    lazy var leadView: LimitImageLeadView = {
+        let nib = UINib.init(nibName: "LimitImageLeadView", bundle: Bundle(for: LimitImageLeadView.self))
+        let leadView = nib.instantiate(withOwner: nil, options: nil).last as! LimitImageLeadView
+        leadView.setLimintBtn.layer.cornerRadius = 2
+        leadView.frame = view.bounds
+        leadView.isHidden = true
+        leadView.backgroundColor = UIColor(white: 0.13, alpha: 1)
+        return leadView
+    }()
     
     deinit {
         if let albumModel = groupModel as? MTImagePickerPhotosAlbumModel {
@@ -87,33 +96,51 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configNavibarColor()
-        loadImages()
+        manageBtn.isHidden = true
+        view.addSubview(leadView)
+        /// 相册授权检测
         if #available(iOS 14.0, *){
-            if PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited {
-                manageBtn.isHidden = false
-            }else{
-                manageBtn.isHidden = true
+            let authorizationStatus =  PHPhotoLibrary.authorizationStatus(for: .readWrite)
+            if authorizationStatus == .limited {
+                configNavibarColor(jColor(color: 0x222222))
+                leadView.isHidden = false
+                leadView.visitPartImageCallBack = {
+                    self.leadView.isHidden = true
+                    self.loadImages()
+                    PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self)
+                    self.presentingViewController?.view.backgroundColor = .black
+                }
+
+            }else if authorizationStatus == .authorized{
+                configNavibarColor(jColor(color: 0x000000))
+                leadView.isHidden = true
+                loadImages()
+
+            }else {
+                configNavibarColor(jColor(color: 0x222222))
+                leadView.isHidden = false
+                leadView.visitPartImageBtn.isHidden = true
             }
         }else{
-            manageBtn.isHidden = true
+           
         }
         PHPhotoLibrary.shared().register(self)
+      
     }
-    
-    
-    
+
     func loadImages(){
         if let title = self.groupModel?.getAlbumName() {
-            titleBtn.set(image: Bundle.getImage(name: "pull_down"), title: title, titlePosition: .left, additionalSpacing: 4, state: .normal)
-            titleBtn.set(image: Bundle.getImage(name: "pull_up"), title: title, titlePosition: .left, additionalSpacing: 4, state: .selected)
+            titleBtn.set(image: Bundle.getImage(name: "pull_down"), title: title.albumCnName, titlePosition: .left, additionalSpacing: 4, state: .normal)
+            titleBtn.set(image: Bundle.getImage(name: "pull_up"), title: title.albumCnName, titlePosition: .left, additionalSpacing: 4, state: .selected)
         }
 
         if self.groupModel == nil {
             MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
                 if group == nil {
                     /// 没有获取到图片
+                    self.leadView.isHidden = false
                 }else{
+                    self.leadView.isHidden = true
                     group?.getMTImagePickerModelsListAsync(complete: { [weak self](models) in
                         self?.dataSource = models
                         self?.collectionView.reloadData()
@@ -122,6 +149,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
                 }
             }
         }else{
+            self.leadView.isHidden = true
             self.groupModel?.getMTImagePickerModelsListAsync { (models) in
                 self.dataSource = models
                 self.collectionView.reloadData()
@@ -139,14 +167,16 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView.reloadData()
-        self.lbSelected.text = String(delegate.selectedSource.count)
-        self.lbSelected.isHidden = delegate.selectedSource.count == 0
+        nextStepBtn.setTitle("下一步 \(delegate.selectedSource.count)/\(delegate.maxCount)", for: .normal)
+//        self.lbSelected.text = String(delegate.selectedSource.count)
+//        self.lbSelected.isHidden = delegate.selectedSource.count == 0
         let isShow = !(delegate.selectedSource.count == 0)
         self.btnPreview.isEnabled = isShow
         if delegate.maxCount > 1 {
             toolbarView.isHidden = !isShow
             self.delegate.showToolBarView(isShow: !isShow)
         }else{
+
             self.delegate.showToolBarView(isShow: true)
         }
     }
@@ -230,10 +260,11 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         if let dex = delegate.selectedSource.firstIndex(of: model) {
             cell.btnCheck.setTitle("\(dex+1)", for: .selected)
         }
+        
         cell.btnCheck.addTarget(self, action: #selector(MTImagePickerAssetsController.btnCheckTouch(_:)), for: .touchUpInside)
-        cell.leading.constant = self.collectionView.leading.constant
-        cell.trailing.constant = self.collectionView.leading.constant
-        cell.top.constant = self.collectionView.leading.constant * 2
+//        cell.leading.constant = self.collectionView.leading.constant
+//        cell.trailing.constant = self.collectionView.leading.constant
+//        cell.top.constant = self.collectionView.leading.constant * 2
         
         UIView.performWithoutAnimation {
             cell.layoutIfNeeded()
@@ -260,6 +291,8 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
             if sender.isSelected {
                 delegate.selectedSource.append(self.dataSource[index])
                 sender.heartbeatsAnimation(duration: 0.15)
+              
+
             }else {
                 if let removeIndex = delegate.selectedSource.firstIndex(of: self.dataSource[index]) {
                     delegate.selectedSource.remove(at: removeIndex)
@@ -269,9 +302,11 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
             if let dex = delegate.selectedSource.firstIndex(of: self.dataSource[index]) {
                 sender.setTitle("\(dex+1)", for: .selected)
             }
-            self.lbSelected.text = String(delegate.selectedSource.count)
-            self.lbSelected.isHidden = delegate.selectedSource.count == 0
-            self.lbSelected.heartbeatsAnimation(duration: 0.15)
+            nextStepBtn.setTitle("下一步 \(delegate.selectedSource.count)/\(delegate.maxCount)", for: .normal)
+
+//            self.lbSelected.text = String(delegate.selectedSource.count)
+//            self.lbSelected.isHidden = delegate.selectedSource.count == 0
+//            self.lbSelected.heartbeatsAnimation(duration: 0.15)
             self.btnPreview.isEnabled = !(delegate.selectedSource.count == 0)
         } else {
 
@@ -295,7 +330,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     }
     
     func cellSize() -> CGSize {
-        let size = UIScreen.main.bounds.width/3 * UIScreen.main.scale
+        let size = (UIScreen.main.bounds.width-2*3)/3
         return CGSize(width: size, height: size)
     }
     
