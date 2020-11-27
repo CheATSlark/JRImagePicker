@@ -60,7 +60,7 @@ public class MTTakePhotoController: UIViewController {
                 
             }
         }
-        imagePickerDelegate?.showToolBarView(isShow: true)
+//        imagePickerDelegate?.showToolBarView(isShow: true)
     }
     
     
