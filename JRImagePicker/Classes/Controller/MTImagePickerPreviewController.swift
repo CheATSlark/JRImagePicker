@@ -78,7 +78,8 @@ class MTImagePickerPreviewController:UIViewController,UICollectionViewDelegateFl
         if !self.initialScrollDone {
             self.initialScrollDone = true
             if let initialIndexPath = self.initialIndexPath {
-                self.collectionView.scrollToItem(at: initialIndexPath, at: .right, animated: false)
+                self.collectionView.setContentOffset(CGPoint(x: self.collectionView.bounds.size.width*CGFloat(initialIndexPath.row), y: 0), animated: false)
+//                self.collectionView.scrollToItem(at: initialIndexPath, at: .right, animated: false)
             }
         }
     }
