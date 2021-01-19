@@ -107,8 +107,8 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
                 leadView.visitPartImageCallBack = {
                     self.leadView.isHidden = true
                     self.loadImages()
-                    PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self)
-                    self.presentingViewController?.view.backgroundColor = .black
+//                    PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: self)
+//                    self.presentingViewController?.view.backgroundColor = .black
                 }
 
             }else if authorizationStatus == .authorized{
@@ -275,7 +275,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if delegate.maxCount == 1 {
-            delegate.selectedSource.append(self.dataSource[indexPath.row])
+            delegate.selectedSource = [self.dataSource[indexPath.row]]
             delegate.didFinishPicking()
         }else{
             self.pushToImageSelectorPreviewController(initialIndexPath: indexPath, dataSource: self.dataSource)

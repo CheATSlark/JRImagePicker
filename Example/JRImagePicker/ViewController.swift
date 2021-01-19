@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     @IBAction func pickerAction(_ sender: Any) {
         let vc = MTPickerViewController.instance
         vc.modalPresentationStyle = .fullScreen
-        vc.pickerMaxCount = 2
+        vc.pickerMaxCount = 1
         present(vc, animated: true, completion: nil)
         
     }
