@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JRImagePicker'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'JRImagePicker is a photo picker and taker set'
 
 # This description is used to generate tags and improve search results.
