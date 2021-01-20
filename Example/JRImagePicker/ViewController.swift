@@ -25,6 +25,7 @@ class ViewController: UIViewController {
         let vc = MTPickerViewController.instance
         vc.modalPresentationStyle = .fullScreen
         vc.pickerMaxCount = 1
+        vc.imageIsEdit = false
         present(vc, animated: true, completion: nil)
         
     }

@@ -23,7 +23,7 @@ public class MTTakePhotoController: UIViewController {
     let focusView = UIView(frame: CGRect(x: 0, y: 0, width: 90, height: 90))
     let screenWidth = UIScreen.main.bounds.size.width
     var isInited = false
-    
+    var isCrop: Bool = true
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,6 +130,7 @@ public class MTTakePhotoController: UIViewController {
                     }
                     vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: assetResult.firstObject!)]
                     vc.delegate = self?.imagePickerDelegate
+                    vc.isCrop = self?.isCrop ?? true
                     self?.navigationController?.pushViewController(vc, animated: true)
                     self?.imagePickerDelegate?.showToolBarView(isShow: false)
                 }

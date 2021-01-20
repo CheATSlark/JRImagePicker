@@ -13,6 +13,7 @@ class MTImageResultController: UIViewController {
 
     var list: [MTImagePickerPhotosModel] = []
     var resultList: (([MTImagePickerPhotosModel])->Void)?
+    var isCrop: Bool = true
     
     @IBOutlet weak var collection: UICollectionView!
     
@@ -78,6 +79,7 @@ extension MTImageResultController: UICollectionViewDelegate, UICollectionViewDat
         cell.layer.shouldRasterize = true
         cell.layer.rasterizationScale = UIScreen.main.scale
         cell.initWithModel(model)
+        cell.isCrop = isCrop
         return cell
     }
     

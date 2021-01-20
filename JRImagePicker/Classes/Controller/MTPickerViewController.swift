@@ -44,6 +44,7 @@ public class MTPickerViewController: UIViewController {
         let vc = MTTakePhotoNavigationController.instance
         if let takePhoto = vc.viewControllers.first as? MTTakePhotoController {
             takePhoto.imagePickerDelegate = self
+            takePhoto.isCrop = imageIsEdit
         }
         return vc
     }()

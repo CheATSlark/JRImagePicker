@@ -17,6 +17,11 @@ class ImageResultClCell: UICollectionViewCell, UIScrollViewDelegate {
     
     fileprivate var model:MTImagePickerModel!
     var pushCropController: ((UIViewController)->Void)?
+    var isCrop: Bool? {
+        didSet {
+            clipView.isHidden = !(isCrop ?? true)
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,6 +33,7 @@ class ImageResultClCell: UICollectionViewCell, UIScrollViewDelegate {
 //        clipView.corner(byRoundingCorners: [.topLeft,.bottomLeft], radii: 3, CGRect(origin: .zero, size: .init(width: 62.5, height: 30)))
 //        clipView.backgroundColor = JTextMidColor
         scrollview.addSubview(imageView)
+
     }
     
     override func prepareForReuse() {
