@@ -88,7 +88,7 @@ public class MTTakePhotoController: UIViewController {
     
     @IBAction func closeAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-        imagePickerDelegate?.imagePickerControllerDidCancel()
+        imagePickerDelegate?.imagePickerControllerDidCancel(reason: nil)
     }
     
     @IBAction func flipAction(_ sender: Any) {
@@ -122,13 +122,21 @@ public class MTTakePhotoController: UIViewController {
                 let requset = PHAssetChangeRequest.creationRequestForAsset(from: shotImage)
                 localIdentifier =  requset.placeholderForCreatedAsset?.localIdentifier
             } completionHandler: { (isSuccess, error) in
-                let assetResult = PHAsset.fetchAssets(withLocalIdentifiers: [localIdentifier!], options: nil)
+                guard let localID = localIdentifier else {
+                    self?.imagePickerDelegate?.imagePickerControllerDidCancel(reason: "相机异常")
+                    return
+                }
+                let assetResult = PHAsset.fetchAssets(withLocalIdentifiers: [localID], options: nil)
                 DispatchQueue.main.async {
                     let vc = MTImageResultController.instance
                     vc.resultList = { (list) in
                         self?.imagePickerDelegate?.imagePickerController(models: list)
                     }
-                    vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: assetResult.firstObject!)]
+                    guard let asset = assetResult.firstObject else {
+                        self?.imagePickerDelegate?.imagePickerControllerDidCancel(reason: "请查看权限设置")
+                        return
+                    }
+                    vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)]
                     vc.delegate = self?.imagePickerDelegate
                     vc.isCrop = self?.isCrop ?? true
                     self?.navigationController?.pushViewController(vc, animated: true)

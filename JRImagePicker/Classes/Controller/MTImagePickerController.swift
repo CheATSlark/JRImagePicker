@@ -17,7 +17,7 @@ public protocol MTImagePickerControllerDelegate:NSObjectProtocol {
    
     func imagePickerController(models:[MTImagePickerPhotosModel])
     
-    func imagePickerControllerDidCancel()
+    func imagePickerControllerDidCancel(reason: String?)
     
     func showToolBarView(isShow: Bool)
 }
@@ -26,7 +26,7 @@ extension MTImagePickerControllerDelegate {
     func imagePickerController(models:[MTImagePickerPhotosModel]) {
         
     }
-    public func imagePickerControllerDidCancel() {
+    public func imagePickerControllerDidCancel(reason: String?) {
         
     }
     func showToolBarView(isShow: Bool) {
@@ -111,7 +111,7 @@ extension MTImagePickerController:MTImagePickerDataSourceDelegate {
     }
 
     public func didCancel() {
-        imagePickerDelegate?.imagePickerControllerDidCancel()
+        imagePickerDelegate?.imagePickerControllerDidCancel(reason: nil)
         self.dismiss(animated: true, completion: nil)
     }
     

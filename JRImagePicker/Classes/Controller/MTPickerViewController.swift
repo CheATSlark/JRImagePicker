@@ -22,8 +22,10 @@ public class MTPickerViewController: UIViewController {
     public var pickerMaxCount = 1
     /// 是否需要编辑
     public var imageIsEdit: Bool = true
-    
+    /// 选中的照片
     public var pickedImages: (([MTImagePickerPhotosModel]) -> Void)?
+    /// 取消原因
+    public var cancelReason:((String?)-> Void)?
     
     private var isHiddenStatusBar: Bool = true
     public override var prefersStatusBarHidden: Bool {
@@ -115,6 +117,10 @@ extension MTPickerViewController: MTImagePickerControllerDelegate {
     
     public func imagePickerController(models: [MTImagePickerPhotosModel]) {
         pickedImages?(models)
+    }
+    
+    public func imagePickerControllerDidCancel(reason: String?) {
+        cancelReason?(reason)
     }
     
     public func showToolBarView(isShow: Bool) {
