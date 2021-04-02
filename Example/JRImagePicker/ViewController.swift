@@ -26,6 +26,7 @@ class ViewController: UIViewController {
         vc.modalPresentationStyle = .fullScreen
         vc.pickerMaxCount = 1
         vc.imageIsEdit = false
+        vc.selectedShoot = true
         present(vc, animated: true, completion: nil)
         
     }

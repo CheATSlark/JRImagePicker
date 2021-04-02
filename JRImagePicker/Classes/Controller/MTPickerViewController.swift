@@ -26,6 +26,8 @@ public class MTPickerViewController: UIViewController {
     public var pickedImages: (([MTImagePickerPhotosModel]) -> Void)?
     /// 取消原因
     public var cancelReason:((String?)-> Void)?
+    /// 选择拍照
+    public var selectedShoot: Bool = false
     
     private var isHiddenStatusBar: Bool = true
     public override var prefersStatusBarHidden: Bool {
@@ -64,6 +66,12 @@ public class MTPickerViewController: UIViewController {
         // Do any additional setup after loading the view.
         subViewController = [photoAssetVc, takePhotoVc]
         
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        if selectedShoot == true {
+            selectIndex(takePhotoBtn)
+        }
     }
 
     @IBAction func selectIndex(_ sender: UIButton) {
