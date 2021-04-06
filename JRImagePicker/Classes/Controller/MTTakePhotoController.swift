@@ -127,20 +127,27 @@ public class MTTakePhotoController: UIViewController {
                     return
                 }
                 let assetResult = PHAsset.fetchAssets(withLocalIdentifiers: [localID], options: nil)
-                DispatchQueue.main.async {
-                    let vc = MTImageResultController.instance
-                    vc.resultList = { (list) in
-                        self?.imagePickerDelegate?.imagePickerController(models: list)
-                    }
+                DispatchQueue.main.async { [weak self] in
                     guard let asset = assetResult.firstObject else {
                         self?.imagePickerDelegate?.imagePickerControllerDidCancel(reason: "请查看权限设置")
                         return
                     }
-                    vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)]
-                    vc.delegate = self?.imagePickerDelegate
-                    vc.isCrop = self?.isCrop ?? true
-                    self?.navigationController?.pushViewController(vc, animated: true)
-                    self?.imagePickerDelegate?.showToolBarView(isShow: false)
+                    
+                    if self?.isCrop == false {
+                        self?.imagePickerDelegate?.imagePickerController(models: [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)])
+                        self?.dismiss(animated: true, completion: nil)
+                    } else {
+                        let vc = MTImageResultController.instance
+                        vc.resultList = { (list) in
+                            self?.imagePickerDelegate?.imagePickerController(models: list)
+                        }
+                        
+                        vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)]
+                        vc.delegate = self?.imagePickerDelegate
+                        vc.isCrop = self?.isCrop ?? true
+                        self?.navigationController?.pushViewController(vc, animated: true)
+                        self?.imagePickerDelegate?.showToolBarView(isShow: false)
+                    }
                 }
             }
             
