@@ -34,6 +34,20 @@ public class MTPickerViewController: UIViewController {
         isHiddenStatusBar
     }
     
+    lazy var indiactor: UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView()
+        aiv.frame = CGRect(x: 0, y: 0, width: 120, height: 120)
+        if #available(iOS 13.0, *) {
+            aiv.style = .large
+        } else {
+            // Fallback on earlier versions
+            aiv.style = .gray
+        }
+    
+        self.view.addSubview(aiv)
+        aiv.center = self.view.center
+        return aiv
+    }()
     
     lazy var photoAssetVc: MTImagePickerController = {
         let vc = MTImagePickerController.instance
@@ -64,13 +78,27 @@ public class MTPickerViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        subViewController = [photoAssetVc, takePhotoVc]
+        if selectedShoot == true {
+            subViewController = [takePhotoVc, photoAssetVc]
+            photoAssetBtn.setTitle("拍照", for: .normal)
+            takePhotoBtn.setTitle("相册", for: .normal)
+            indiactor.startAnimating()
+        } else {
+            subViewController = [photoAssetVc, takePhotoVc]
+        }
         
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         if selectedShoot == true {
-            selectIndex(takePhotoBtn)
+            if indiactor.isAnimating == true {
+                if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
+                    vc.start()
+                    indiactor.stopAnimating()
+                    indiactor.hidesWhenStopped = true
+                }
+            }
+            
         }
     }
 
@@ -80,16 +108,31 @@ public class MTPickerViewController: UIViewController {
         }
         
         contentCollectionView.scrollToItem(at: IndexPath(row: toolBtns.firstIndex(of: sender) ?? 0, section: 0), at: .centeredHorizontally, animated: true)
-        switch sender {
-        case takePhotoBtn:
-            if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
-                vc.start()
+        if selectedShoot == false {
+            switch sender {
+            case takePhotoBtn:
+                if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
+                    vc.start()
+                }
+            default:
+                if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
+                    vc.end()
+                }
+                break
             }
-        default:
-            if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
-                vc.end()
+        } else {
+            switch sender {
+            case photoAssetBtn:
+                if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
+                    vc.start()
+                }
+            default:
+                if let vc = takePhotoVc.viewControllers.first as? MTTakePhotoController {
+                    vc.end()
+                }
+                break
             }
-            break
+            
         }
     }
 
