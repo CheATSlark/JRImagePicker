@@ -9,7 +9,7 @@ import UIKit
 import Photos
 
 public class MTTakePhotoController: UIViewController {
-
+    
     let photoCapture = JRPostPhotoCapture()
     @IBOutlet weak var previewViewContainer: UIView!
     @IBOutlet weak var flashBtn: UIButton!
@@ -29,7 +29,7 @@ public class MTTakePhotoController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-    
+        
         // Focus
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.focusTapped(_:)))
         tapRecognizer.delegate = self
@@ -45,7 +45,7 @@ public class MTTakePhotoController: UIViewController {
         super.viewSafeAreaInsetsDidChange()
         previewToTopConstratint.constant = view.safeAreaInsets.top - (navigationController?.navigationBar.frame.size.height ?? 0)
     }
-        
+    
     public override var prefersStatusBarHidden: Bool {
         false
     }
@@ -60,7 +60,7 @@ public class MTTakePhotoController: UIViewController {
                 
             }
         }
-//        imagePickerDelegate?.showToolBarView(isShow: true)
+        //        imagePickerDelegate?.showToolBarView(isShow: true)
     }
     
     
@@ -77,12 +77,10 @@ public class MTTakePhotoController: UIViewController {
                 }
             }
         }
-       
-        
     }
     
     func end() {
-      
+        
         photoCapture.stopCamera()
     }
     
@@ -113,45 +111,50 @@ public class MTTakePhotoController: UIViewController {
     
     
     @IBAction func shootAction(_ sender: Any) {
-        photoCapture.shoot { [weak self](data) in
-            guard var shotImage = UIImage(data: data) else { return }
-            shotImage = self?.cropImageToRation(shotImage) ?? shotImage
-            self?.photoCapture.stopCamera()
-            var localIdentifier: String?
-            PHPhotoLibrary.shared().performChanges {
-                let requset = PHAssetChangeRequest.creationRequestForAsset(from: shotImage)
-                localIdentifier =  requset.placeholderForCreatedAsset?.localIdentifier
-            } completionHandler: { (isSuccess, error) in
-                guard let localID = localIdentifier else {
-                    self?.imagePickerDelegate?.imagePickerControllerDidCancel(reason: "相机异常")
-                    return
-                }
-                let assetResult = PHAsset.fetchAssets(withLocalIdentifiers: [localID], options: nil)
-                DispatchQueue.main.async { [weak self] in
-                    guard let asset = assetResult.firstObject else {
-                        self?.imagePickerDelegate?.imagePickerControllerDidCancel(reason: "请查看权限设置")
-                        return
+        AVCaptureDevice.requestAccess(for: .video) { [weak self](isTrust) in
+            if isTrust == true {
+                self?.photoCapture.shoot { [weak self](data) in
+                    guard var shotImage = UIImage(data: data) else { return }
+                    shotImage = self?.cropImageToRation(shotImage) ?? shotImage
+                    self?.photoCapture.stopCamera()
+                    var localIdentifier: String?
+                    PHPhotoLibrary.shared().performChanges {
+                        let requset = PHAssetChangeRequest.creationRequestForAsset(from: shotImage)
+                        localIdentifier =  requset.placeholderForCreatedAsset?.localIdentifier
+                    } completionHandler: { (isSuccess, error) in
+                        guard let localID = localIdentifier else {
+                            self?.imagePickerDelegate?.imagePickerControllerDidCancel(reason: "相机异常")
+                            return
+                        }
+                        let assetResult = PHAsset.fetchAssets(withLocalIdentifiers: [localID], options: nil)
+                        DispatchQueue.main.async { [weak self] in
+                            guard let asset = assetResult.firstObject else {
+                                self?.imagePickerDelegate?.imagePickerControllerDidCancel(reason: "请查看权限设置")
+                                return
+                            }
+                            
+                            if self?.isCrop == false {
+                                self?.imagePickerDelegate?.imagePickerController(models: [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)])
+                                self?.dismiss(animated: true, completion: nil)
+                            } else {
+                                let vc = MTImageResultController.instance
+                                vc.resultList = { (list) in
+                                    self?.imagePickerDelegate?.imagePickerController(models: list)
+                                }
+                                
+                                vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)]
+                                vc.delegate = self?.imagePickerDelegate
+                                vc.isCrop = self?.isCrop ?? true
+                                self?.navigationController?.pushViewController(vc, animated: true)
+                                self?.imagePickerDelegate?.showToolBarView(isShow: false)
+                            }
+                        }
                     }
                     
-                    if self?.isCrop == false {
-                        self?.imagePickerDelegate?.imagePickerController(models: [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)])
-                        self?.dismiss(animated: true, completion: nil)
-                    } else {
-                        let vc = MTImageResultController.instance
-                        vc.resultList = { (list) in
-                            self?.imagePickerDelegate?.imagePickerController(models: list)
-                        }
-                        
-                        vc.list = [MTImagePickerPhotosModel(mediaType: .Photo, phasset: asset)]
-                        vc.delegate = self?.imagePickerDelegate
-                        vc.isCrop = self?.isCrop ?? true
-                        self?.navigationController?.pushViewController(vc, animated: true)
-                        self?.imagePickerDelegate?.showToolBarView(isShow: false)
-                    }
                 }
             }
-            
         }
+        
     }
     
     func cropImageToRation(_ image: UIImage) -> UIImage {
@@ -198,8 +201,8 @@ public class MTTakePhotoController: UIViewController {
                 photoWidth = photoHeight*3/4
             }
         }
-    
-       
+        
+        
         var original: CGPoint = .zero
         switch photoCapture.currentAspectRatioMode {
         case .ratio1x1:
@@ -228,7 +231,7 @@ public class MTTakePhotoController: UIViewController {
     }
     
     func focus(recognizer: UITapGestureRecognizer) {
-
+        
         let point = recognizer.location(in: previewViewContainer)
         
         // Focus the capture
@@ -291,10 +294,10 @@ public class MTTakePhotoController: UIViewController {
                        animations: {
                         v.alpha = 1.0
                         v.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        }, completion: { _ in
-            v.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-            v.removeFromSuperview()
-        })
+                       }, completion: { _ in
+                        v.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        v.removeFromSuperview()
+                       })
     }
     
 }
