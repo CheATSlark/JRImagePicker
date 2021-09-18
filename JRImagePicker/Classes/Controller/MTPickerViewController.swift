@@ -28,8 +28,11 @@ public class MTPickerViewController: UIViewController {
     public var cancelReason:((String?)-> Void)?
     /// 选择拍照
     public var selectedShoot: Bool = false
+    /// 相册选择类型
+    public var mediaType: [MTImagePickerMediaType] = [.Photo]
     
     private var isHiddenStatusBar: Bool = true
+    
     public override var prefersStatusBarHidden: Bool {
         isHiddenStatusBar
     }
@@ -50,10 +53,11 @@ public class MTPickerViewController: UIViewController {
     }()
     
     lazy var photoAssetVc: MTImagePickerController = {
-        let vc = MTImagePickerController.instance
+        let vc = MTImagePickerController.instance(mediaType: mediaType)
         vc.maxCount = pickerMaxCount
         vc.isCrop = imageIsEdit
         vc.imagePickerDelegate = self
+        vc.mediaTypes = mediaType
         vc.modalPresentationStyle = .fullScreen
         return vc
     }()

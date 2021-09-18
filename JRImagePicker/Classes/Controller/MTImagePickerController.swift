@@ -43,40 +43,40 @@ public class MTImagePickerController:UINavigationController {
     
     public var selectedSource = [MTImagePickerModel]()
    
-    
-    public var mediaTypesNSArray:NSArray {
-        get {
-            let arr = NSMutableArray()
-            for mediaType in self.mediaTypes {
-                arr.add(mediaType.rawValue)
-            }
-            return arr
-        }
-        set {
-            self.mediaTypes.removeAll()
-            for mediaType in newValue {
-                if let intType = mediaType as? Int {
-                    if intType == 0 {
-                        self.mediaTypes.append(.Photo)
-                    } else if intType == 1 {
-                        self.mediaTypes.append(.Video)
-                    }
-                }
-            }
-        }
-    }
+    public var pickedMedias: (([MTImagePickerPhotosModel]) -> Void)?
+//    public var mediaTypesNSArray:NSArray {
+//        get {
+//            let arr = NSMutableArray()
+//            for mediaType in self.mediaTypes {
+//                arr.add(mediaType.rawValue)
+//            }
+//            return arr
+//        }
+//        set {
+//            self.mediaTypes.removeAll()
+//            for mediaType in newValue {
+//                if let intType = mediaType as? Int {
+//                    if intType == 0 {
+//                        self.mediaTypes.append(.Photo)
+//                    } else if intType == 1 {
+//                        self.mediaTypes.append(.Video)
+//                    }
+//                }
+//            }
+//        }
+//    }
     
 
-    public class var instance:MTImagePickerController {
-        get {
-            let controller = MTImagePickerAssetsController.instance
-            MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
-                controller.groupModel = group
-            }
-            let navigation = MTImagePickerController(rootViewController: controller)
-            controller.delegate = navigation
-            return navigation
+    public class func instance(mediaType: [MTImagePickerMediaType]) -> MTImagePickerController {
+        
+        let controller = MTImagePickerAssetsController.instance
+        MTImagePickerDataSource.fetchRecentlyAddPhotots (types: mediaType){ (group) in
+            controller.groupModel = group
         }
+        let navigation = MTImagePickerController(rootViewController: controller)
+        navigation.mediaTypes = mediaType
+        controller.delegate = navigation
+        return navigation
     }
     
     public override func viewDidLoad() {
@@ -102,6 +102,7 @@ extension MTImagePickerController:MTImagePickerDataSourceDelegate {
             let vc = MTImageResultController.instance
             vc.resultList = { [weak self](list) in
                 self?.imagePickerDelegate?.imagePickerController(models: list)
+                self?.pickedMedias?(list)
             }
             vc.list = models
             vc.delegate = self.imagePickerDelegate

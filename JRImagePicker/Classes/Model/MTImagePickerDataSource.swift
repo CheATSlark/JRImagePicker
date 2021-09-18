@@ -117,7 +117,7 @@ class MTImagePickerDataSource {
     
     /// 获取最近添加的照片合集
     /// - Parameter complete: 回调照片数据
-    class func fetchRecentlyAddPhotots(complete:@escaping ((MTImagePickerAlbumModel?) -> Void)) {
+    class func fetchRecentlyAddPhotots(types: [MTImagePickerMediaType], complete:@escaping ((MTImagePickerAlbumModel?) -> Void)) {
         
         func recentlyAddPhotos()-> MTImagePickerAlbumModel? {
             let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
@@ -125,7 +125,14 @@ class MTImagePickerDataSource {
                 let options = PHFetchOptions()
                 var formats = [String]()
                 var arguments = [Int]()
-                formats.append("mediaType = %d")
+                for type in types {
+                    formats.append("mediaType = %d")
+                    if type == .Photo {
+                        arguments.append(PHAssetMediaType.image.rawValue)
+                    } else if type == .Video {
+                        arguments.append(PHAssetMediaType.video.rawValue)
+                    }
+                }
                 arguments.append(PHAssetMediaType.image.rawValue)
                 options.predicate = NSPredicate(format: formats.joined(separator: " or "), argumentArray: arguments)
                 options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]

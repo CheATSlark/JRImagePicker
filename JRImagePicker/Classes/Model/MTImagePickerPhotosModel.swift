@@ -81,9 +81,16 @@ public class MTImagePickerPhotosModel : MTImagePickerModel {
         }
     }
     
-    override func getAVPlayerItem() -> AVPlayerItem? {
-        return self.fetchAVPlayerItemSync()
+    override func getAVPlayerItem(complete: @escaping (AVPlayerItem?) -> Void) {
+        let options = PHVideoRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        PHImageManager.default().requestPlayerItem(forVideo: self.phasset, options: options){
+            item,infoDict in
+            complete(item)
+        }
     }
+      
     
     override func getFileSize() -> Int {
         var fileSize = 0
@@ -102,13 +109,16 @@ public class MTImagePickerPhotosModel : MTImagePickerModel {
     
     private func fetchAVPlayerItemSync() -> AVPlayerItem? {
         var playerItem:AVPlayerItem?
-        let sem = DispatchSemaphore(value: 0)
-        PHImageManager.default().requestPlayerItem(forVideo: self.phasset, options: nil){
+//        let sem = DispatchSemaphore(value: 0)
+        let options = PHVideoRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        PHImageManager.default().requestPlayerItem(forVideo: self.phasset, options: options){
             item,infoDict in
             playerItem = item
-            sem.signal()
+//            sem.signal()
         }
-        sem.wait()
+//        sem.wait()
         return playerItem
     }
     

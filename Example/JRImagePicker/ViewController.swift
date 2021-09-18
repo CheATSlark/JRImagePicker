@@ -22,11 +22,23 @@ class ViewController: UIViewController {
     }
 
     @IBAction func pickerAction(_ sender: Any) {
-        let vc = MTPickerViewController.instance
+        let vc = MTImagePickerController.instance(mediaType: [MTImagePickerMediaType.Video])
+        vc.mediaTypes = [MTImagePickerMediaType.Video]
+        vc.maxCount = 1
+        vc.isCrop = false
+//        vc.imagePickerDelegate = self
+        vc.pickedMedias = { (media) in
+            
+        }
         vc.modalPresentationStyle = .fullScreen
-        vc.pickerMaxCount = 1
-        vc.imageIsEdit = false
-        vc.selectedShoot = true
+      
+        
+//        let vc = MTPickerViewController.instance
+//        vc.modalPresentationStyle = .fullScreen
+//        vc.pickerMaxCount = 1
+//        vc.imageIsEdit = false
+//        vc.selectedShoot = false
+//        vc.mediaType = [.Video]
         present(vc, animated: true, completion: nil)
         
     }

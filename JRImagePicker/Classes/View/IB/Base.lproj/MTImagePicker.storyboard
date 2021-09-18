@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment version="4352" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -286,7 +286,9 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="209" height="252"/>
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5dL-JJ-Yak">
-                                                    <rect key="frame" x="89.666666666666671" y="109" width="30" height="34"/>
+                                                    <rect key="frame" x="74" y="109" width="61" height="34"/>
+                                                    <color key="backgroundColor" red="0.45882352939999999" green="0.77647058820000003" blue="0.75686274509999996" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                    <state key="normal" title="bofang "/>
                                                     <connections>
                                                         <action selector="btnPlayTouch:" destination="Nav-KB-hOB" eventType="touchUpInside" id="pcq-xQ-KgJ"/>
                                                     </connections>

@@ -59,7 +59,7 @@ public class MTImagePickerModel:NSObject {
         fatalError("getVideoDurationAsync has not been implemented")
     }
     
-    func getAVPlayerItem () -> AVPlayerItem? {
+    func getAVPlayerItem (complete: @escaping (AVPlayerItem?) -> Void) {
         fatalError("getAVPlayerItem has not been implemented")
     }
     

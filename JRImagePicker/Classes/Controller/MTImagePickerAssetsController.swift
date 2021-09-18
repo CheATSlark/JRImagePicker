@@ -33,6 +33,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     private var dataSource = [MTImagePickerModel]()
     private var initialScrollDone:Bool = false
     private var titleBtn = UIButton(type: .custom)
+    var mediaTypes:[MTImagePickerMediaType]  = [.Photo]
     
     lazy var albumsView: ImageAlbumsView? = {
         
@@ -135,7 +136,8 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
         }
 
         if self.groupModel == nil {
-            MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
+           
+            MTImagePickerDataSource.fetchRecentlyAddPhotots(types: mediaTypes)  { (group) in
                 if group == nil {
                     /// 没有获取到图片
                     self.leadView.isHidden = false
@@ -274,9 +276,17 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //单个不需要预览，直接进入结果，但是视频仍然需要预览
         if delegate.maxCount == 1 {
-            delegate.selectedSource = [self.dataSource[indexPath.row]]
-            delegate.didFinishPicking()
+            let resource = self.dataSource[indexPath.row]
+            switch resource.mediaType {
+            case .Photo:
+                delegate.selectedSource = [self.dataSource[indexPath.row]]
+                delegate.didFinishPicking()
+            default:
+                self.pushToImageSelectorPreviewController(initialIndexPath: indexPath, dataSource: self.dataSource)
+            }
+           
         }else{
             self.pushToImageSelectorPreviewController(initialIndexPath: indexPath, dataSource: self.dataSource)
         }
@@ -375,7 +385,7 @@ class MTImagePickerAssetsController :UIViewController,UICollectionViewDataSource
 extension MTImagePickerAssetsController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
         DispatchQueue.main.async { [weak self] in
-            MTImagePickerDataSource.fetchRecentlyAddPhotots { (group) in
+            MTImagePickerDataSource.fetchRecentlyAddPhotots(types: self?.mediaTypes ?? [.Photo]) { (group) in
                 self?.groupModel = group
                 self?.loadImages()
             }

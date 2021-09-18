@@ -71,15 +71,15 @@ class VideoPickerPreviewCell:UICollectionViewCell{
             self.imageView.image = image
         }
         //此处耗时,故放在滚动结束后调用
-        if let playerItem = self.model.getAVPlayerItem() {
-            self.avPlayer.replaceCurrentItem(with: playerItem)
-            if let currentItem = self.avPlayer.currentItem {
-                self.avPlayer.addBoundaryTimeObserver(forTimes: [currentItem.asset.duration.value as NSValue], queue: nil) {
+        self.model.getAVPlayerItem { [weak self] playerItem in
+            self?.avPlayer.replaceCurrentItem(with: playerItem)
+            if let currentItem = self?.avPlayer.currentItem {
+                self?.avPlayer.addBoundaryTimeObserver(forTimes: [currentItem.asset.duration.value as NSValue], queue: nil) {
                     [unowned self] in
                     DispatchQueue.main.async {
-                        self.avPlayer.seek(to: CMTime(value: 0 , timescale: 30))
-                        self.btnPlay.isHidden = false
-                        self.setTopAndBottomView(hidden: false)
+                        self?.avPlayer.seek(to: CMTime(value: 0 , timescale: 30))
+                        self?.btnPlay.isHidden = false
+                        self?.setTopAndBottomView(hidden: false)
                     }
                 }
             }

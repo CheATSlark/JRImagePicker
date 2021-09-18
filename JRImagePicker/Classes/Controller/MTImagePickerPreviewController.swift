@@ -54,6 +54,7 @@ class MTImagePickerPreviewController:UIViewController,UICollectionViewDelegateFl
         }else{
             nextStepBtn.isEnabled = false
         }
+        self.collectionView.contentInsetAdjustmentBehavior = .never
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,7 +86,7 @@ class MTImagePickerPreviewController:UIViewController,UICollectionViewDelegateFl
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.count
+        return  dataSource.count 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

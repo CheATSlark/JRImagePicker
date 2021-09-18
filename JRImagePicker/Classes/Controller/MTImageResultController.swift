@@ -36,7 +36,10 @@ class MTImageResultController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        delegate.showToolBarView(isShow: false)
+        if delegate != nil {
+            delegate.showToolBarView(isShow: false)
+        }
+        
     }
     
     func configRightNavigationbar(){
